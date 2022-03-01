@@ -50,3 +50,15 @@ export const changeStatus = (id, status) => {
     console.log(error);
   }
 };
+
+export const sortNotes = key => {
+  try {
+    let dataFromLocalStorage = JSON.parse(localStorage.getItem('data'));
+    let dataToLocalStorage = dataFromLocalStorage.sort(
+      (firstNote, secondNote) => firstNote[key].localeCompare(secondNote[key])
+    );
+    localStorage.setItem('data', JSON.stringify(dataToLocalStorage));
+  } catch (error) {
+    console.log(error);
+  }
+};

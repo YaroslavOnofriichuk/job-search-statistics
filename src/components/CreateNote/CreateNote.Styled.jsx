@@ -1,13 +1,14 @@
 import styled from 'styled-components';
 
 export const Form = styled.form`
+  margin: 10px auto;
   border: 1px solid #ffffff;
   border-radius: 1px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 10px;
-  width: 400px;
+  max-width: 400px;
   background: rgba(25, 1, 65, 0.3);
 
   label {

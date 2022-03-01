@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams, Link, useLocation } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import {
   findNote,
   deleteNote,
   changeStatus,
 } from '../../services/localStorage';
 import { StyledNote } from './Note.styled';
+import { StyledLink } from '../GlobalStyle/Link.Styled';
 import { Button } from '../GlobalStyle/Button';
 
 export const Note = () => {
@@ -35,7 +36,7 @@ export const Note = () => {
 
   return (
     <StyledNote>
-      <Link to={location?.state?.from ?? '/'}>Назад</Link>
+      <StyledLink to={location?.state?.from ?? '/'}>Назад</StyledLink>
       <ul>
         <li>
           <span>Позиція</span> <span>{note.position}</span>
