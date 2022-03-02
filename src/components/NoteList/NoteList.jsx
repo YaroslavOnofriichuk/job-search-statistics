@@ -1,4 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
+import { formatDate } from '../../services/formatDate';
 import { Ul } from './NoteList.styled';
 
 export const NoteList = ({ notes }) => {
@@ -11,7 +12,7 @@ export const NoteList = ({ notes }) => {
           <li key={note.id}>
             <Link to={`/notes/${note.id}`} state={{ from: location }}>
               <div>
-                <p>Дата надсилання</p> <p>{note.date}</p>
+                <p>Дата надсилання</p> <p>{formatDate(note.date)}</p>
               </div>
               <div>
                 <p>Позиція</p> <p>{note.position}</p>

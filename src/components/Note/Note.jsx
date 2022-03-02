@@ -8,6 +8,7 @@ import {
 import { StyledNote } from './Note.styled';
 import { StyledLink } from '../GlobalStyle/Link.Styled';
 import { Button } from '../GlobalStyle/Button';
+import { formatDate } from '../../services/formatDate';
 
 export const Note = () => {
   const [note, setNote] = useState('');
@@ -54,7 +55,7 @@ export const Note = () => {
           <span>Статус</span> <span>{note.status}</span>
         </li>
         <li>
-          <span>Дата надсилання</span> <span>{note.date}</span>
+          <span>Дата надсилання</span> <span>{formatDate(note.date)}</span>
         </li>
       </ul>
       <div>
