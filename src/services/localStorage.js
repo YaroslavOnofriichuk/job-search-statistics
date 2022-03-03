@@ -51,11 +51,16 @@ export const changeStatus = (id, status) => {
   }
 };
 
-export const sortNotes = key => {
+export const sortNotes = (key, sortType) => {
   try {
     let dataFromLocalStorage = JSON.parse(localStorage.getItem('data'));
     let dataToLocalStorage = dataFromLocalStorage.sort(
-      (firstNote, secondNote) => firstNote[key].localeCompare(secondNote[key])
+      (firstNote, secondNote) => {
+        if (sortType) {
+          return firstNote[key].localeCompare(secondNote[key]);
+        }
+        return secondNote[key].localeCompare(firstNote[key]);
+      }
     );
     localStorage.setItem('data', JSON.stringify(dataToLocalStorage));
   } catch (error) {

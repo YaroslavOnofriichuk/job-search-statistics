@@ -11,22 +11,20 @@ export const Section = styled.section`
     font-size: 24px;
     line-height: 1.2;
 
-    color: #FFFFFF;
+    color: #ffffff;
   }
 `;
-
 
 export const Header = styled.header`
   background-image: linear-gradient(
     rgba(47, 48, 58, 0.2),
     rgba(47, 48, 58, 0.2)
-  );  
+  );
   width: 100px;
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-
 
   a {
     /* border-top: 1px solid #ffffff;
@@ -42,7 +40,6 @@ export const Header = styled.header`
   .active {
     border-right: none;
   }
-
 `;
 
 export const Main = styled.main`

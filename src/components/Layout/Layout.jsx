@@ -1,6 +1,12 @@
-import { Outlet, NavLink } from "react-router-dom";
-import { Section, Header, Main } from "./Layout.Styled";
-import { HomeIcon, StatisticIcon, ListIcon, CalendarIcon, UserIcon} from "../icons/icons";
+import { Outlet, NavLink } from 'react-router-dom';
+import { Section, Header, Main } from './Layout.Styled';
+import {
+  HomeIcon,
+  StatisticIcon,
+  ListIcon,
+  CalendarIcon,
+  UserIcon,
+} from '../icons/icons';
 
 export const Layout = () => {
   return (
@@ -9,19 +15,29 @@ export const Layout = () => {
         <nav>
           <ul>
             <li>
-              <NavLink to="home" activeclassname="active"><HomeIcon /></NavLink>
+              <NavLink to="home" activeclassname="active">
+                <HomeIcon />
+              </NavLink>
             </li>
             <li>
-              <NavLink to="notes" activeclassname="active"><ListIcon /></NavLink>
+              <NavLink to="notes" activeclassname="active">
+                <ListIcon />
+              </NavLink>
             </li>
             <li>
-              <NavLink to="statistic" activeclassname="active"><StatisticIcon /></NavLink>
+              <NavLink to="statistic" activeclassname="active">
+                <StatisticIcon />
+              </NavLink>
             </li>
             <li>
-              <NavLink to="page4" activeclassname="active"><CalendarIcon /></NavLink>
+              <NavLink to="calendar" activeclassname="active">
+                <CalendarIcon />
+              </NavLink>
             </li>
             <li>
-              <NavLink to="user" activeclassname="active"><UserIcon /></NavLink>
+              <NavLink to="user" activeclassname="active">
+                <UserIcon />
+              </NavLink>
             </li>
           </ul>
         </nav>
@@ -29,6 +45,6 @@ export const Layout = () => {
       <Main>
         <Outlet />
       </Main>
-     </Section> 
+    </Section>
   );
 };

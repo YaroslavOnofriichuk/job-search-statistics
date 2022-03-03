@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { formatDate } from '../../services/formatDate';
+import { formatDate } from '../../helpers';
 import { Ul } from './NoteList.styled';
 
 export const NoteList = ({ notes }) => {

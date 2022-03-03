@@ -8,4 +8,6 @@ export const Button = styled.button`
   color: #ffffff;
   padding: 10px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
 `;

@@ -2,12 +2,21 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { sortNotes } from '../services/localStorage';
 import { NoteList } from '../components/NoteList/NoteList';
+import { SortIcon } from '../components/icons/icons';
 import { Div } from '../components/NoteList/NoteListButtons.Styled';
 import { Button } from '../components/GlobalStyle/Button';
 import { StyledLink } from '../components/GlobalStyle/Link.Styled';
 
 export const NoteListPage = () => {
   const [notes, setNotes] = useState(null);
+  const [sortType, setSortType] = useState({
+    date: true,
+    position: true,
+    company: true,
+    source: true,
+    description: true,
+    status: true,
+  });
   const location = useLocation();
 
   useEffect(() => {
@@ -20,7 +29,10 @@ export const NoteListPage = () => {
 
   const handleSort = e => {
     const data = e.target.attributes.data.value;
-    sortNotes(data);
+    sortNotes(data, sortType[data]);
+    setSortType(previousSortType => {
+      return { ...previousSortType, [data]: !sortType[data] };
+    });
     try {
       setNotes(JSON.parse(localStorage.getItem('data')));
     } catch (error) {
@@ -35,22 +47,22 @@ export const NoteListPage = () => {
       </StyledLink>
       <Div>
         <Button type="button" data="date" onClick={handleSort}>
-          Сортувати по даті
+          Сортувати по даті <SortIcon />
         </Button>
         <Button type="button" data="position" onClick={handleSort}>
-          Сортувати по позиції
+          Сортувати по позиції <SortIcon />
         </Button>
         <Button type="button" data="company" onClick={handleSort}>
-          Сортувати по компанії
+          Сортувати по компанії <SortIcon />
         </Button>
         <Button type="button" data="source" onClick={handleSort}>
-          Сортувати по джерелу
+          Сортувати по джерелу <SortIcon />
         </Button>
         <Button type="button" data="description" onClick={handleSort}>
-          Сортувати по опису
+          Сортувати по опису <SortIcon />
         </Button>
         <Button type="button" data="status" onClick={handleSort}>
-          Сортувати по статусу
+          Сортувати по статусу <SortIcon />
         </Button>
       </Div>
       {notes && <NoteList notes={notes} />}

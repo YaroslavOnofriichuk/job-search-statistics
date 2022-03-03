@@ -8,7 +8,7 @@ import {
 import { StyledNote } from './Note.styled';
 import { StyledLink } from '../GlobalStyle/Link.Styled';
 import { Button } from '../GlobalStyle/Button';
-import { formatDate } from '../../services/formatDate';
+import { formatDate } from '../../helpers';
 
 export const Note = () => {
   const [note, setNote] = useState('');
@@ -22,7 +22,7 @@ export const Note = () => {
 
   const handleDelete = () => {
     deleteNote(noteId);
-    navigate('/notes');
+    navigate(location?.state?.from ?? '/notes');
   };
 
   const handleResolved = () => {
@@ -37,7 +37,7 @@ export const Note = () => {
 
   return (
     <StyledNote>
-      <StyledLink to={location?.state?.from ?? '/'}>Назад</StyledLink>
+      <StyledLink to={location?.state?.from ?? '/notes'}>Назад</StyledLink>
       <ul>
         <li>
           <span>Позиція</span> <span>{note.position}</span>
