@@ -21,7 +21,7 @@ export const Header = styled.header`
     rgba(47, 48, 58, 0.2)
   );
   width: 100px;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -39,10 +39,12 @@ export const Header = styled.header`
 
   .active {
     border-right: none;
+    /* border-color: #05d2ff; */
   }
 `;
 
 export const Main = styled.main`
   padding: 20px;
   width: 100%;
+  margin-left: 100px;
 `;

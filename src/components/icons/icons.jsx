@@ -8,9 +8,9 @@ import {
   BsArrowDownUp,
 } from 'react-icons/bs';
 
-export const HomeIcon = () => {
+export const HomeIcon = ({ size = '2em', color = '#ffffff' }) => {
   return (
-    <IconContext.Provider value={{ color: '#ffffff', size: '2em' }}>
+    <IconContext.Provider value={{ color: `${color}`, size: `${size}` }}>
       <div>
         <BsHouseDoor />
       </div>
@@ -18,9 +18,9 @@ export const HomeIcon = () => {
   );
 };
 
-export const StatisticIcon = () => {
+export const StatisticIcon = ({ size = '2em', color = '#ffffff' }) => {
   return (
-    <IconContext.Provider value={{ color: '#ffffff', size: '2em' }}>
+    <IconContext.Provider value={{ color: `${color}`, size: `${size}` }}>
       <div>
         <BsBarChartLine />
       </div>
@@ -28,9 +28,9 @@ export const StatisticIcon = () => {
   );
 };
 
-export const ListIcon = () => {
+export const ListIcon = ({ size = '2em', color = '#ffffff' }) => {
   return (
-    <IconContext.Provider value={{ color: '#ffffff', size: '2em' }}>
+    <IconContext.Provider value={{ color: `${color}`, size: `${size}` }}>
       <div>
         <BsCardText />
       </div>
@@ -38,9 +38,9 @@ export const ListIcon = () => {
   );
 };
 
-export const CalendarIcon = () => {
+export const CalendarIcon = ({ size = '2em', color = '#ffffff' }) => {
   return (
-    <IconContext.Provider value={{ color: '#ffffff', size: '2em' }}>
+    <IconContext.Provider value={{ color: `${color}`, size: `${size}` }}>
       <div>
         <BsCalendarWeek />
       </div>
@@ -48,9 +48,9 @@ export const CalendarIcon = () => {
   );
 };
 
-export const UserIcon = () => {
+export const UserIcon = ({ size = '2em', color = '#ffffff' }) => {
   return (
-    <IconContext.Provider value={{ color: '#ffffff', size: '2em' }}>
+    <IconContext.Provider value={{ color: `${color}`, size: `${size}` }}>
       <div>
         <BsPerson />
       </div>
@@ -58,9 +58,9 @@ export const UserIcon = () => {
   );
 };
 
-export const SortIcon = () => {
+export const SortIcon = ({ size = '2em', color = '#ffffff' }) => {
   return (
-    <IconContext.Provider value={{ color: '#ffffff', size: '1em' }}>
+    <IconContext.Provider value={{ color: `${color}`, size: `${size}` }}>
       <div>
         <BsArrowDownUp />
       </div>
