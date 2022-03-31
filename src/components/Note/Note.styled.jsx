@@ -23,6 +23,8 @@ export const StyledNote = styled.div`
   }
 
   span {
+    overflow: hidden;
+
     &:first-child {
       text-align: center;
       width: 100%;

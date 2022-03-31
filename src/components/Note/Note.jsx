@@ -1,38 +1,72 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import {
-  findNote,
-  deleteNote,
-  changeStatus,
-} from '../../services/localStorage';
 import { StyledNote } from './Note.styled';
 import { StyledLink } from '../GlobalStyle/Link.Styled';
 import { Button } from '../GlobalStyle/Button';
 import { formatDate } from '../../helpers';
+import { doc, updateDoc, getDoc, deleteDoc } from 'firebase/firestore';
+import { db } from '../../firebase';
+import { useUserContext } from '../../userContext/userContext';
 
 export const Note = () => {
   const [note, setNote] = useState('');
   const { noteId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
+  const { user } = useUserContext();
 
   useEffect(() => {
-    setNote(findNote(noteId));
-  }, [noteId]);
+    const fetchNote = async () => {
+      try {
+        const docSnap = await getDoc(doc(db, user.id, noteId));
+        if (docSnap.exists()) {
+          setNote(docSnap.data());
+        } else {
+          console.log('No such document!');
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-  const handleDelete = () => {
-    deleteNote(noteId);
+    fetchNote();
+  }, [noteId, user.id]);
+
+  const handleDelete = async () => {
+    try {
+      await deleteDoc(doc(db, user.id, noteId));
+    } catch (error) {
+      console.log(error);
+    }
     navigate(location?.state?.from ?? '/notes');
   };
 
-  const handleResolved = () => {
-    changeStatus(noteId, 'Прийнято');
-    setNote(findNote(noteId));
+  const handleResolved = async () => {
+    try {
+      await updateDoc(doc(db, user.id, noteId), { status: 'Прийнято' });
+      setNote(previousState => {
+        return {
+          ...previousState,
+          status: 'Прийнято',
+        };
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const handleRejected = () => {
-    changeStatus(noteId, 'Відхилено');
-    setNote(findNote(noteId));
+  const handleRejected = async () => {
+    try {
+      await updateDoc(doc(db, user.id, noteId), { status: 'Відхилено' });
+      setNote(previousState => {
+        return {
+          ...previousState,
+          status: 'Відхилено',
+        };
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

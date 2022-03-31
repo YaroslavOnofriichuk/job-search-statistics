@@ -15,7 +15,7 @@ export const LoginForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const auth = getAuth();
-  const { isLoggedIn, logIn, logOut } = useUserContext();
+  const { logIn } = useUserContext();
 
   const onSubmit = async data => {
     try {
@@ -40,7 +40,7 @@ export const LoginForm = () => {
   return (
     <>
       <StyledLink to={location?.state?.from ?? '/'}>Назад</StyledLink>
-      <Tittle>Увійти</Tittle>
+      <Tittle>Авторизуватися</Tittle>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <label>
           Імейл
@@ -54,7 +54,7 @@ export const LoginForm = () => {
             {...register('password', { required: true })}
           />
         </label>
-        <input type="submit" />
+        <input type="submit" value="Увійти" />
       </Form>
     </>
   );

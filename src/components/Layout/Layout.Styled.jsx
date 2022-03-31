@@ -5,11 +5,11 @@ export const Section = styled.section`
 
   a {
     text-decoration: none;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Oswald', sans-serif;
     font-style: normal;
-    font-weight: 500;
+    font-weight: 300;
     font-size: 24px;
-    line-height: 1.2;
+    line-height: 1.3;
 
     color: #ffffff;
   }
@@ -20,6 +20,7 @@ export const Header = styled.header`
     rgba(47, 48, 58, 0.2),
     rgba(47, 48, 58, 0.2)
   );
+
   width: 100px;
   min-height: 100vh;
   display: flex;
@@ -46,5 +47,4 @@ export const Header = styled.header`
 export const Main = styled.main`
   padding: 20px;
   width: 100%;
-  margin-left: 100px;
 `;

@@ -6,6 +6,9 @@ import { SortIcon } from '../../components/icons/icons';
 import { Div } from '../../components/NoteList/NoteListButtons.Styled';
 import { Button } from '../../components/GlobalStyle/Button';
 import { StyledLink } from '../../components/GlobalStyle/Link.Styled';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../../firebase';
+import { useUserContext } from '../../userContext/userContext';
 
 export const NoteListPage = () => {
   const [notes, setNotes] = useState(null);
@@ -18,14 +21,22 @@ export const NoteListPage = () => {
     status: true,
   });
   const location = useLocation();
+  const { user } = useUserContext();
 
   useEffect(() => {
-    try {
-      setNotes(JSON.parse(localStorage.getItem('data')));
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
+    const fetchData = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, user.id));
+        const newNotes = [];
+        querySnapshot.forEach(doc => newNotes.push(doc.data()));
+        setNotes(newNotes);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, [user.id]);
 
   const handleSort = e => {
     const data = e.target.attributes.data.value;

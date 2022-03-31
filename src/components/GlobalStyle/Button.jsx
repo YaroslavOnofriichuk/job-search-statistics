@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
 export const Button = styled.button`
+  font-family: 'Oswald', sans-serif;
+  font-style: normal;
   background: #47406f;
   backdrop-filter: blur(15px);
   border-radius: 3px;

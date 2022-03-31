@@ -3,7 +3,9 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Form } from './CreateNote.Styled';
 import { StyledLink } from '../GlobalStyle/Link.Styled';
 import { nanoid } from 'nanoid';
-import { addData } from '../../services/localStorage';
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from '../../firebase';
+import { useUserContext } from '../../userContext/userContext';
 
 export const CreateNote = () => {
   const {
@@ -13,12 +15,18 @@ export const CreateNote = () => {
   } = useForm();
   const navigate = useNavigate();
   const location = useLocation();
+  const { user } = useUserContext();
 
-  const onSubmit = data => {
+  const onSubmit = async data => {
     data.id = nanoid();
     data.status = 'В очікуванні';
-    addData(data);
-    navigate('/notes');
+
+    try {
+      await setDoc(doc(db, user.id, data.id), data);
+      navigate('/notes');
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -59,7 +67,7 @@ export const CreateNote = () => {
           Опис
           <textarea {...register('description', {})} rows="4"></textarea>
         </label>
-        <input type="submit" />
+        <input type="submit" value="Зберегти" />
       </Form>
     </>
   );

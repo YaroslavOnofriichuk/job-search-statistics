@@ -4,13 +4,30 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { checkColor } from '../../helpers';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../../firebase';
+import { useUserContext } from '../../userContext/userContext';
 
 export const CalendarPage = () => {
   const [events, setEvents] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const { user } = useUserContext();
 
   useEffect(() => {
+    // const fetchData = async () => {
+    //   try {
+    //     const querySnapshot = await getDocs(collection(db, user.id));
+    //     const newEvents = [];
+    //     querySnapshot.forEach(doc => newNotes.push(doc.data()));
+    //     setNotes(newNotes);
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
+
+    // fetchData();
+
     try {
       const notes = JSON.parse(localStorage.getItem('data'));
       const newEvents = [];

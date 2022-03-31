@@ -1,7 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 import img from '../../images/background-img.jpg';
 
-
 export const GlobalStyle = createGlobalStyle`
 * {
   box-sizing: border-box;
@@ -29,9 +28,9 @@ export const GlobalStyle = createGlobalStyle`
     background-color: #E5E5E5;
     backdrop-filter: blur(8px);
 
-    font-family: 'Inter', sans-serif;
+    font-family: 'Oswald', sans-serif;
     font-style: normal;
-    font-weight: 500;
+    font-weight: 300;
     font-size: 24px;
     line-height: 1.2;
 

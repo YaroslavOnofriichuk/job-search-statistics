@@ -6,6 +6,7 @@ import { CreateNote } from './CreateNote/CreateNote';
 import { FeedbackSchedule } from './FeedbackSchedule/FeedbackSchedule';
 import { SourceChart } from './SourceChart/SourceChart';
 import { LoginForm } from './LoginForm/LoginForm';
+import { ChangeForm } from './ChangeForm/ChangeForm';
 import { RegisterForm } from './RegisterForm/RegisterForm';
 import { GlobalStyle } from './GlobalStyle/GlobalStyle';
 import { UserProvider } from '../userContext/userContext';
@@ -57,6 +58,7 @@ export const App = () => {
             <Route path="user" element={<UserPage />} />
             <Route path="user/register" element={<RegisterForm />} />
             <Route path="user/login" element={<LoginForm />} />
+            <Route path="user/change" element={<ChangeForm />} />
             <Route path="*" element={<HomePage />} />
           </Route>
         </Routes>

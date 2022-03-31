@@ -39,6 +39,12 @@ export const UserPage = () => {
       )}
 
       {isLoggedIn && (
+        <StyledLink to="change" state={{ from: location }}>
+          Редагувати профіль
+        </StyledLink>
+      )}
+
+      {isLoggedIn && (
         <Button type="button" onClick={handleLogOut}>
           Вийти
         </Button>
