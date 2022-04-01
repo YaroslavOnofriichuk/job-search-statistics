@@ -5,6 +5,7 @@ import { StyledLink } from '../GlobalStyle/Link.Styled';
 import { Tittle } from '../GlobalStyle/Tittle';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { useUserContext } from '../../userContext/userContext';
+import { toast } from 'react-toastify';
 
 export const LoginForm = () => {
   const {
@@ -33,7 +34,17 @@ export const LoginForm = () => {
       });
       navigate(-1);
     } catch (error) {
-      console.log('error', error);
+      if (error.code === 'auth/user-not-found') {
+        toast.error('Невірний імейл', {
+          style: { backgroundColor: '#47406f', color: '#ffffff' },
+        });
+      } else if (error.code === 'auth/wrong-password') {
+        toast.error('Невірний пароль', {
+          style: { backgroundColor: '#47406f', color: '#ffffff' },
+        });
+      } else {
+        console.log('error', error);
+      }
     }
   };
 

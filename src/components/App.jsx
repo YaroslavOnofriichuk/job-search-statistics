@@ -13,6 +13,7 @@ import { UserProvider } from '../userContext/userContext';
 import { Loader } from '../components/Loader/Loader';
 import { LimitedRoute } from './LimitedRoute/LimitedRoute';
 import { PrivateRoute } from './PrivateRoute/PrivateRoute';
+import { MyToastContainer } from './Toast/Toast';
 
 const HomePage = lazy(() =>
   import('../pages/HomePage/HomePage').then(module => ({
@@ -44,7 +45,7 @@ export const App = () => {
   return (
     <UserProvider>
       <GlobalStyle />
-
+      <MyToastContainer />
       <Suspense fallback={<Loader />}>
         <Routes>
           <Route path="/" element={<Layout />}>

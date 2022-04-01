@@ -5,6 +5,7 @@ import { StyledLink } from '../GlobalStyle/Link.Styled';
 import { Tittle } from '../GlobalStyle/Tittle';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { useUserContext } from '../../userContext/userContext';
+import { toast } from 'react-toastify';
 
 export const RegisterForm = () => {
   const {
@@ -33,7 +34,17 @@ export const RegisterForm = () => {
       });
       navigate(-1);
     } catch (error) {
-      console.log('error', error);
+      if (error.code === 'auth/email-already-in-use') {
+        toast.error('Такий користувач вже існує', {
+          style: { backgroundColor: '#47406f', color: '#ffffff' },
+        });
+      } else if (error.code === 'auth/weak-password') {
+        toast.error('Пароль має містити мінімум 7 символів', {
+          style: { backgroundColor: '#47406f', color: '#ffffff' },
+        });
+      } else {
+        console.log('error', error);
+      }
     }
   };
 

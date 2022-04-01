@@ -1,5 +1,5 @@
 import { StyledLink } from '../../components/GlobalStyle/Link.Styled';
-import { useLocation, Navigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useUserContext } from '../../userContext/userContext';
 import { Tittle } from '../../components/GlobalStyle/Tittle';
 import { Section } from './HomePage.Styled';
