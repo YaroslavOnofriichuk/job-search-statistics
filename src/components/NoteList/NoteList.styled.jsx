@@ -5,6 +5,7 @@ export const Ul = styled.ul`
 
   li {
     list-style: none;
+    padding: 5px;
   }
 
   a {
@@ -12,7 +13,7 @@ export const Ul = styled.ul`
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 10px;
     margin-bottom: 10px;
-    padding: 5px;
+
     display: flex;
   }
 
@@ -25,6 +26,9 @@ export const Ul = styled.ul`
   }
 
   P {
+    overflow: hidden;
+    word-break: break-word;
+
     &:first-child {
       background: #47406f;
     }

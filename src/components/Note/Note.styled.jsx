@@ -19,16 +19,18 @@ export const StyledNote = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow: auto;
+    overflow: hidden;
   }
 
   span {
-    overflow: hidden;
-
     &:first-child {
       text-align: center;
       width: 100%;
       background: #47406f;
+    }
+
+    &:last-child {
+      word-break: break-word;
     }
   }
 

@@ -15,36 +15,29 @@ export const CalendarPage = () => {
   const { user } = useUserContext();
 
   useEffect(() => {
-    // const fetchData = async () => {
-    //   try {
-    //     const querySnapshot = await getDocs(collection(db, user.id));
-    //     const newEvents = [];
-    //     querySnapshot.forEach(doc => newNotes.push(doc.data()));
-    //     setNotes(newNotes);
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
-
-    // fetchData();
-
-    try {
-      const notes = JSON.parse(localStorage.getItem('data'));
-      const newEvents = [];
-      notes.map(note => {
-        newEvents.push({
-          id: note.id,
-          title: note.position,
-          date: note.date.replace(/T.*$/, ''),
-          borderColor: checkColor(note.status),
-          backgroundColor: checkColor(note.status),
+    const fetchData = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, user.id));
+        const newEvents = [];
+        querySnapshot.forEach(doc => {
+          newEvents.push({
+            id: doc.data().id,
+            title: doc.data().position,
+            date: doc.data().date.replace(/T.*$/, ''),
+            borderColor: checkColor(doc.data().status),
+            backgroundColor: checkColor(doc.data().status),
+          });
         });
-      });
-      setEvents(newEvents);
-    } catch (error) {
-      console.log(error);
+        setEvents(newEvents);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (user) {
+      fetchData();
     }
-  }, []);
+  }, [user]);
 
   const handleDateClick = e => {
     const noteId = e.event._def.publicId;

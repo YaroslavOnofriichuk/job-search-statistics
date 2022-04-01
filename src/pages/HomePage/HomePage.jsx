@@ -1,29 +1,27 @@
-import { Outlet, Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { collection, addDoc } from 'firebase/firestore';
-import { db } from '../../firebase';
-
-const handleClick = async () => {
-  try {
-    const docRef = await addDoc(collection(db, 'users'), {
-      first: 'Ada',
-      middle: 'Mathison',
-      last: 'Turing',
-      born: 1815,
-    });
-    console.log('Document written with ID: ', docRef);
-  } catch (e) {
-    console.error('Error adding document: ', e);
-  }
-};
+import { StyledLink } from '../../components/GlobalStyle/Link.Styled';
+import { useLocation, Navigate } from 'react-router-dom';
+import { useUserContext } from '../../userContext/userContext';
+import { Tittle } from '../../components/GlobalStyle/Tittle';
+import { Section } from './HomePage.Styled';
 
 export const HomePage = () => {
+  const { isLoggedIn } = useUserContext();
+  const location = useLocation();
+
   return (
-    <>
-      <div>HomePage</div>
-      <button type="button" onClick={handleClick}>
-        +
-      </button>
-    </>
+    <Section>
+      <Tittle>Статистика пошуку роботи</Tittle>
+      {!isLoggedIn && (
+        <div>
+          <StyledLink to="/user/register" state={{ from: location }}>
+            Зареєструватися
+          </StyledLink>
+
+          <StyledLink to="/user/login" state={{ from: location }}>
+            Авторизуватися
+          </StyledLink>
+        </div>
+      )}
+    </Section>
   );
 };

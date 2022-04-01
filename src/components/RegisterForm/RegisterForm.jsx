@@ -54,7 +54,7 @@ export const RegisterForm = () => {
             {...register('password', { required: true })}
           />
         </label>
-        <input type="submit" value="Увійти" />
+        <input type="submit" value="Створити профіль" />
       </Form>
     </>
   );

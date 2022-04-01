@@ -11,6 +11,8 @@ import { RegisterForm } from './RegisterForm/RegisterForm';
 import { GlobalStyle } from './GlobalStyle/GlobalStyle';
 import { UserProvider } from '../userContext/userContext';
 import { Loader } from '../components/Loader/Loader';
+import { LimitedRoute } from './LimitedRoute/LimitedRoute';
+import { PrivateRoute } from './PrivateRoute/PrivateRoute';
 
 const HomePage = lazy(() =>
   import('../pages/HomePage/HomePage').then(module => ({
@@ -47,18 +49,88 @@ export const App = () => {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage />} />
-            <Route path="notes" element={<NoteListPage />} />
-            <Route path="notes/:noteId" element={<Note />} />
-            <Route path="notes/create" element={<CreateNote />} />
-            <Route path="statistic" element={<StatisticPage />}>
-              <Route path="feedback" element={<FeedbackSchedule />} />
-              <Route path="source" element={<SourceChart />} />
+            <Route
+              path="notes"
+              element={
+                <PrivateRoute>
+                  <NoteListPage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="notes/:noteId"
+              element={
+                <PrivateRoute>
+                  <Note />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="notes/create"
+              element={
+                <PrivateRoute>
+                  <CreateNote />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="statistic"
+              element={
+                <PrivateRoute>
+                  <StatisticPage />
+                </PrivateRoute>
+              }
+            >
+              <Route
+                path="feedback"
+                element={
+                  <PrivateRoute>
+                    <FeedbackSchedule />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="source"
+                element={
+                  <PrivateRoute>
+                    <SourceChart />
+                  </PrivateRoute>
+                }
+              />
             </Route>
-            <Route path="calendar" element={<CalendarPage />} />
+            <Route
+              path="calendar"
+              element={
+                <PrivateRoute>
+                  <CalendarPage />
+                </PrivateRoute>
+              }
+            />
             <Route path="user" element={<UserPage />} />
-            <Route path="user/register" element={<RegisterForm />} />
-            <Route path="user/login" element={<LoginForm />} />
-            <Route path="user/change" element={<ChangeForm />} />
+            <Route
+              path="user/register"
+              element={
+                <LimitedRoute>
+                  <RegisterForm />
+                </LimitedRoute>
+              }
+            />
+            <Route
+              path="user/login"
+              element={
+                <LimitedRoute>
+                  <LoginForm />
+                </LimitedRoute>
+              }
+            />
+            <Route
+              path="user/change"
+              element={
+                <PrivateRoute>
+                  <ChangeForm />
+                </PrivateRoute>
+              }
+            />
             <Route path="*" element={<HomePage />} />
           </Route>
         </Routes>

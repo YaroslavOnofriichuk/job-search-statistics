@@ -7,11 +7,7 @@ import { getAuth, updateProfile } from 'firebase/auth';
 import { useUserContext } from '../../userContext/userContext';
 
 export const ChangeForm = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
   const location = useLocation();
   const auth = getAuth();
@@ -39,7 +35,7 @@ export const ChangeForm = () => {
           <input type="text" {...register('name', { required: true })} />
           {/* {errors.position?.type === 'required' && "First name is required"} */}
         </label>
-        <input type="submit" />
+        <input type="submit" value="Зберегти" />
       </Form>
     </>
   );

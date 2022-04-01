@@ -4,6 +4,7 @@ export const Div = styled.div`
   margin: 10px auto;
   padding: 5px;
   display: flex;
+  justify-content: space-between;
 
   button {
     /* width: 16%; */
