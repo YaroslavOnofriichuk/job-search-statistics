@@ -8,7 +8,7 @@ export const Section = styled.section`
   div {
     display: flex;
     flex-direction: column;
-    margin-top: 20px;
+    margin-top: 100px;
   }
 
   a:first-child {

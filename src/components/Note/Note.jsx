@@ -7,6 +7,7 @@ import { formatDate } from '../../helpers';
 import { doc, updateDoc, getDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { useUserContext } from '../../userContext/userContext';
+import { toast } from 'react-toastify';
 
 export const Note = () => {
   const [note, setNote] = useState('');
@@ -22,7 +23,9 @@ export const Note = () => {
         if (docSnap.exists()) {
           setNote(docSnap.data());
         } else {
-          console.log('No such document!');
+          toast.error('Не знайдено замітку', {
+            style: { backgroundColor: '#47406f', color: '#ffffff' },
+          });
         }
       } catch (error) {
         console.log(error);
@@ -36,6 +39,9 @@ export const Note = () => {
     try {
       await deleteDoc(doc(db, user.id, noteId));
     } catch (error) {
+      toast.error('Не вдалося видалити', {
+        style: { backgroundColor: '#47406f', color: '#ffffff' },
+      });
       console.log(error);
     }
     navigate(location?.state?.from ?? '/notes');
@@ -51,6 +57,9 @@ export const Note = () => {
         };
       });
     } catch (error) {
+      toast.error('Не вдалося змінити статус', {
+        style: { backgroundColor: '#47406f', color: '#ffffff' },
+      });
       console.log(error);
     }
   };
@@ -65,6 +74,9 @@ export const Note = () => {
         };
       });
     } catch (error) {
+      toast.error('Не вдалося змінити статус', {
+        style: { backgroundColor: '#47406f', color: '#ffffff' },
+      });
       console.log(error);
     }
   };

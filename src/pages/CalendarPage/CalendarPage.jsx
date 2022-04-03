@@ -51,6 +51,8 @@ export const CalendarPage = () => {
         initialView="dayGridMonth"
         events={events}
         eventClick={handleDateClick}
+        locale="uk"
+        firstDay="1"
       />
     </>
   );

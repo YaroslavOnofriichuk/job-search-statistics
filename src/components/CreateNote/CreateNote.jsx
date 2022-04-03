@@ -6,6 +6,7 @@ import { nanoid } from 'nanoid';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { useUserContext } from '../../userContext/userContext';
+import { toast } from 'react-toastify';
 
 export const CreateNote = () => {
   const {
@@ -25,6 +26,9 @@ export const CreateNote = () => {
       await setDoc(doc(db, user.id, data.id), data);
       navigate('/notes');
     } catch (error) {
+      toast.error('Не вдалося зберегти', {
+        style: { backgroundColor: '#47406f', color: '#ffffff' },
+      });
       console.error(error);
     }
   };
@@ -36,11 +40,12 @@ export const CreateNote = () => {
         <label>
           Позиція
           <input type="text" {...register('position', { required: true })} />
-          {/* {errors.position?.type === 'required' && "First name is required"} */}
+          {errors.position?.type === 'required' && "Обов'язкове поле"}
         </label>
         <label>
           Компанія
           <input type="text" {...register('company', { required: true })} />
+          {errors.company?.type === 'required' && "Обов'язкове поле"}
         </label>
         <label>
           Дата надсилання
@@ -48,6 +53,7 @@ export const CreateNote = () => {
             type="datetime-local"
             {...register('date', { required: true })}
           />
+          {errors.date?.type === 'required' && "Обов'язкове поле"}
         </label>
         <label>
           Джерело

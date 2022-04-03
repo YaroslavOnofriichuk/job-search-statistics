@@ -74,7 +74,7 @@ export const App = () => {
                 </PrivateRoute>
               }
             />
-            <Route
+            {/* <Route
               path="statistic"
               element={
                 <PrivateRoute>
@@ -98,7 +98,7 @@ export const App = () => {
                   </PrivateRoute>
                 }
               />
-            </Route>
+            </Route> */}
             <Route
               path="calendar"
               element={

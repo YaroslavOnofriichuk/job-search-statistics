@@ -43,6 +43,9 @@ export const RegisterForm = () => {
           style: { backgroundColor: '#47406f', color: '#ffffff' },
         });
       } else {
+        toast.error('Не вдалося зареєструватися', {
+          style: { backgroundColor: '#47406f', color: '#ffffff' },
+        });
         console.log('error', error);
       }
     }
@@ -56,7 +59,7 @@ export const RegisterForm = () => {
         <label>
           Імейл
           <input type="email" {...register('email', { required: true })} />
-          {/* {errors.position?.type === 'required' && "First name is required"} */}
+          {errors.email?.type === 'required' && "Обов'язкове поле"}
         </label>
         <label>
           Пароль
@@ -64,6 +67,7 @@ export const RegisterForm = () => {
             type="password"
             {...register('password', { required: true })}
           />
+          {errors.password?.type === 'required' && "Обов'язкове поле"}
         </label>
         <input type="submit" value="Створити профіль" />
       </Form>
