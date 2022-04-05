@@ -1,7 +1,7 @@
 import { Button } from '../../components/GlobalStyle/Button';
 import { UserIcon } from '../../components/icons/icons';
 import { StyledLink } from '../../components/GlobalStyle/Link.Styled';
-import { Section } from './UserPage.Styled';
+import { UserPageSection } from './UserPage.Styled';
 import { getAuth, signOut } from 'firebase/auth';
 import { useLocation } from 'react-router-dom';
 import { useUserContext } from '../../userContext/userContext';
@@ -21,7 +21,7 @@ export const UserPage = () => {
   };
 
   return (
-    <Section>
+    <UserPageSection>
       <UserIcon size="5em" />
 
       {isLoggedIn && <h2>{user?.name || user?.email}</h2>}
@@ -49,6 +49,6 @@ export const UserPage = () => {
           Вийти
         </Button>
       )}
-    </Section>
+    </UserPageSection>
   );
 };

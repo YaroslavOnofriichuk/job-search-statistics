@@ -38,9 +38,8 @@ export const Header = styled.header`
     justify-content: center;
   }
 
-  .active {
-    border-right: none;
-    /* border-color: #05d2ff; */
+  .active svg {
+    fill: #47406f;
   }
 `;
 

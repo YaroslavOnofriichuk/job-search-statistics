@@ -26,6 +26,8 @@ export const Form = styled.form`
     border-radius: 1px;
     background: transparent;
     color: #ffffff;
+
+    cursor: pointer;
   }
 
   select {

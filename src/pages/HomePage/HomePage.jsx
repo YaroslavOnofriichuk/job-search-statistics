@@ -2,7 +2,7 @@ import { StyledLink } from '../../components/GlobalStyle/Link.Styled';
 import { useLocation } from 'react-router-dom';
 import { useUserContext } from '../../userContext/userContext';
 import { Tittle } from '../../components/GlobalStyle/Tittle';
-import { Section } from './HomePage.Styled';
+import { HomePageSection } from './HomePage.Styled';
 import { Circle } from '../../components/Circle/Circle';
 
 export const HomePage = () => {
@@ -10,7 +10,7 @@ export const HomePage = () => {
   const location = useLocation();
 
   return (
-    <Section>
+    <HomePageSection>
       <Tittle>Статистика пошуку роботи</Tittle>
       {!isLoggedIn && (
         <div>
@@ -28,6 +28,6 @@ export const HomePage = () => {
           <Circle />
         </div>
       )}
-    </Section>
+    </HomePageSection>
   );
 };

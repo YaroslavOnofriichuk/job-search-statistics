@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { formatDate } from '../../helpers';
 import { Ul } from './NoteList.styled';
+import PropTypes from 'prop-types';
 
 export const NoteList = ({ notes }) => {
   const location = useLocation();
@@ -35,4 +36,8 @@ export const NoteList = ({ notes }) => {
       })}
     </Ul>
   );
+};
+
+NoteList.propTypes = {
+  notes: PropTypes.object,
 };

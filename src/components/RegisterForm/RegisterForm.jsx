@@ -39,7 +39,7 @@ export const RegisterForm = () => {
           style: { backgroundColor: '#47406f', color: '#ffffff' },
         });
       } else if (error.code === 'auth/weak-password') {
-        toast.error('Пароль має містити мінімум 7 символів', {
+        toast.error('Пароль має містити мінімум 6 символів', {
           style: { backgroundColor: '#47406f', color: '#ffffff' },
         });
       } else {

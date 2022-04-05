@@ -1,8 +1,10 @@
 import { PieChart } from 'react-minimal-pie-chart';
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { useUserContext } from '../../userContext/userContext';
+import { StyledLink } from '../GlobalStyle/Link.Styled';
 
 export const Circle = () => {
   const [status, setStatus] = useState({
@@ -11,6 +13,7 @@ export const Circle = () => {
     rejected: 0,
   });
   const { user } = useUserContext();
+  const location = useLocation();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,22 +42,36 @@ export const Circle = () => {
     { title: 'Відхилені', value: status.rejected, color: '#b84956' },
   ];
 
+  const isVisible =
+    status.pending > 0 || status.resolved > 0 || status.rejected > 0;
+
   return (
-    <PieChart
-      data={data}
-      background="transparent"
-      radius={70}
-      lineWidth="5"
-      label={({ dataEntry }) =>
-        Math.round(dataEntry.percentage) + '% ' + dataEntry.title + ' відгуки'
-      }
-      labelStyle={{
-        fontSize: '10px',
-        fill: '#ffffff',
-      }}
-      labelPosition={50}
-      viewBoxSize={[150, 150]}
-      center={[75, 75]}
-    />
+    <>
+      {isVisible ? (
+        <PieChart
+          data={data}
+          background="transparent"
+          radius={70}
+          lineWidth="5"
+          label={({ dataEntry }) =>
+            Math.round(dataEntry.percentage) +
+            '% ' +
+            dataEntry.title +
+            ' відгуки'
+          }
+          labelStyle={{
+            fontSize: '10px',
+            fill: '#ffffff',
+          }}
+          labelPosition={50}
+          viewBoxSize={[150, 150]}
+          center={[75, 75]}
+        />
+      ) : (
+        <StyledLink to="notes/create" state={{ from: location }}>
+          Створити замітку
+        </StyledLink>
+      )}
+    </>
   );
 };
