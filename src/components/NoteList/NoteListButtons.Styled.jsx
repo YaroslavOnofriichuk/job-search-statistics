@@ -7,10 +7,14 @@ export const Div = styled.div`
   justify-content: space-between;
 
   button {
-    /* width: 16%; */
+    display: none;
 
-    &:not(:last-child) {
-      margin-right: 5px;
+    @media (min-width: 660px) {
+      display: flex;
+
+      &:not(:last-child) {
+        margin-right: 5px;
+      }
     }
   }
 `;

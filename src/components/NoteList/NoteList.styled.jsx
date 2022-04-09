@@ -15,19 +15,36 @@ export const Ul = styled.ul`
     margin-bottom: 10px;
 
     display: flex;
+    flex-direction: column;
+
+    @media (min-width: 660px) {
+      flex-direction: row;
+    }
   }
 
   div {
     padding: 5px;
-    width: 16%;
     display: flex;
     flex-direction: column;
     overflow: auto;
+
+    &:nth-child(n + 4) {
+      display: none;
+    }
+
+    @media (min-width: 660px) {
+      width: 16%;
+
+      &:nth-child(n + 4) {
+        display: flex;
+      }
+    }
   }
 
   P {
     overflow: hidden;
     word-break: break-word;
+    text-align: center;
 
     &:first-child {
       background: #47406f;

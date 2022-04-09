@@ -39,5 +39,5 @@ export const NoteList = ({ notes }) => {
 };
 
 NoteList.propTypes = {
-  notes: PropTypes.object,
+  notes: PropTypes.array,
 };

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const Form = styled.form`
-  margin: 10px auto;
+  margin: 20px auto 10px auto;
   border: 1px solid #ffffff;
   border-radius: 1px;
   display: flex;
@@ -15,7 +15,7 @@ export const Form = styled.form`
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
 
   input {

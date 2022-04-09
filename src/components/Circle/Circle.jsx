@@ -43,7 +43,7 @@ export const Circle = () => {
   ];
 
   const isVisible =
-    status.pending > 0 || status.resolved > 0 || status.rejected > 0;
+    status.pending > 0 && status.resolved > 0 && status.rejected > 0;
 
   return (
     <>
