@@ -35,9 +35,9 @@ export const StyledNote = styled.div`
   }
 
   div {
-    max-width: 700px;
-    margin: 0 auto;
+    margin: 10px auto;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
   }
 `;

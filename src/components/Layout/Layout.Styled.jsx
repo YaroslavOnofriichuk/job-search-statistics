@@ -35,6 +35,7 @@ export const Header = styled.header`
   bottom: 0;
   width: 100%;
   height: 60px;
+  z-index: 1;
 
   a {
     width: 100px;

@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { Form } from './CreateNote.Styled';
 import { StyledLink } from '../GlobalStyle/Link.Styled';
 import { nanoid } from 'nanoid';
@@ -7,8 +8,10 @@ import { doc, setDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { useUserContext } from '../../userContext/userContext';
 import { toast } from 'react-toastify';
+import { collection, getDocs } from 'firebase/firestore';
 
 export const CreateNote = () => {
+  const [notes, setNotes] = useState(null);
   const {
     register,
     handleSubmit,
@@ -18,25 +21,52 @@ export const CreateNote = () => {
   const location = useLocation();
   const { user } = useUserContext();
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, user.id));
+        const newNotes = [];
+        querySnapshot.forEach(doc => newNotes.push(doc.data()));
+        setNotes(newNotes);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (user) {
+      fetchData();
+    }
+  }, [user]);
+
   const onSubmit = async data => {
     data.id = nanoid();
-    data.status = 'В очікуванні';
+    data.status = 'Надіслано';
 
-    try {
-      await setDoc(doc(db, user.id, data.id), data);
-      navigate('/notes');
-    } catch (error) {
-      toast.error('Не вдалося зберегти', {
+    if (
+      notes.find(
+        note => note.company === data.company && note.position === data.position
+      )
+    ) {
+      toast.info('Ви вже відправляли резюме в цю компанію', {
         style: { backgroundColor: '#47406f', color: '#ffffff' },
       });
-      console.error(error);
+    } else {
+      try {
+        await setDoc(doc(db, user.id, data.id), data);
+        navigate('/notes');
+      } catch (error) {
+        toast.error('Не вдалося зберегти', {
+          style: { backgroundColor: '#47406f', color: '#ffffff' },
+        });
+        console.error(error);
+      }
     }
   };
 
   return (
     <>
       <StyledLink to={location?.state?.from ?? '/'}>Назад</StyledLink>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form onSubmit={handleSubmit(onSubmit)} style={{ marginTop: '20px' }}>
         <label>
           Позиція
           <input type="text" {...register('position', { required: true })} />

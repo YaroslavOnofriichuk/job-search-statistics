@@ -3,18 +3,26 @@ import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { StyledNote } from './Note.styled';
 import { StyledLink } from '../GlobalStyle/Link.Styled';
 import { Button } from '../GlobalStyle/Button';
+import { Form } from '../CreateNote/CreateNote.Styled';
 import { formatDate } from '../../helpers';
 import { doc, updateDoc, getDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { useUserContext } from '../../userContext/userContext';
 import { toast } from 'react-toastify';
+import { useForm } from 'react-hook-form';
 
 export const Note = () => {
   const [note, setNote] = useState('');
+  const [isOpenForm, setIsOpenForm] = useState(false);
   const { noteId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useUserContext();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   useEffect(() => {
     const fetchNote = async () => {
@@ -38,43 +46,35 @@ export const Note = () => {
   const handleDelete = async () => {
     try {
       await deleteDoc(doc(db, user.id, noteId));
+      navigate(location?.state?.from ?? '/notes');
     } catch (error) {
       toast.error('Не вдалося видалити', {
         style: { backgroundColor: '#47406f', color: '#ffffff' },
       });
       console.log(error);
     }
-    navigate(location?.state?.from ?? '/notes');
   };
 
-  const handleResolved = async () => {
+  const handleChange = () => {
+    setIsOpenForm(!isOpenForm);
+  };
+
+  const onSubmit = async data => {
     try {
-      await updateDoc(doc(db, user.id, noteId), { status: 'Прийнято' });
+      await updateDoc(doc(db, user.id, noteId), {
+        status: data.status,
+        description: data.description,
+      });
       setNote(previousState => {
         return {
           ...previousState,
-          status: 'Прийнято',
+          status: data.status,
+          description: data.description,
         };
       });
+      setIsOpenForm(false);
     } catch (error) {
-      toast.error('Не вдалося змінити статус', {
-        style: { backgroundColor: '#47406f', color: '#ffffff' },
-      });
-      console.log(error);
-    }
-  };
-
-  const handleRejected = async () => {
-    try {
-      await updateDoc(doc(db, user.id, noteId), { status: 'Відхилено' });
-      setNote(previousState => {
-        return {
-          ...previousState,
-          status: 'Відхилено',
-        };
-      });
-    } catch (error) {
-      toast.error('Не вдалося змінити статус', {
+      toast.error('Не вдалося змінити', {
         style: { backgroundColor: '#47406f', color: '#ffffff' },
       });
       console.log(error);
@@ -104,16 +104,46 @@ export const Note = () => {
           <span>Дата надсилання</span> <span>{formatDate(note.date)}</span>
         </li>
       </ul>
+
       <div>
         <Button type="button" onClick={handleDelete}>
           Видалити замітку
         </Button>
-        <Button type="button" onClick={handleResolved}>
-          Змінити статус на прийнято
+      </div>
+
+      <div>
+        <Button type="button" onClick={handleChange}>
+          Редагувати
         </Button>
-        <Button type="button" onClick={handleRejected}>
-          Змінити статус на відхилено
-        </Button>
+
+        {isOpenForm && (
+          <Form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
+            <label>
+              Змінити статус
+              <select
+                {...register('status', { required: true })}
+                defaultValue={note.status}
+              >
+                <option value="Надіслано">Надіслано</option>
+                <option value="Відхилено">Відхилено</option>
+                <option value="Розглядається">Розглядається</option>
+                <option value="Дзвінок рекрутера">Дзвінок рекрутера</option>
+                <option value="Інтерв'ю">Інтерв'ю</option>
+                <option value="Тестове завдання">Тестове завдання</option>
+                <option value="Прийнято">Прийнято</option>
+              </select>
+            </label>
+            <label>
+              Змінити опис
+              <textarea
+                {...register('description', {})}
+                defaultValue={note.description}
+                rows="4"
+              ></textarea>
+            </label>
+            <input type="submit" value="Зберегти" />
+          </Form>
+        )}
       </div>
     </StyledNote>
   );
