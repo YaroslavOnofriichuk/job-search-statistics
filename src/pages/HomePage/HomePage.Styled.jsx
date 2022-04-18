@@ -22,6 +22,7 @@ export const HomePageSection = styled.section`
       height: 20px;
       border-radius: 50%;
       margin-top: 5px;
+      margin-right: 10px;
     }
   }
 

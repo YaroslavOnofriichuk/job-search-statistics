@@ -72,31 +72,31 @@ export const Circle = () => {
       <ul>
         <li>
           <span style={{ background: '#8a9ab5' }}></span>
-          <span>&nbsp;Надіслано</span>
+          <span>Надіслано</span>
         </li>
         <li>
           <span style={{ background: '#b84956' }}></span>
-          <span>&nbsp;Відхилено</span>
+          <span>Відхилено</span>
         </li>
         <li>
           <span style={{ background: '#6a92d4' }}></span>
-          <span>&nbsp;Розглядається</span>
+          <span>Розглядається</span>
         </li>
         <li>
           <span style={{ background: '#d5db25' }}></span>
-          <span>&nbsp;Дзвінок рекрутера</span>
+          <span>Дзвінок рекрутера</span>
         </li>
         <li>
           <span style={{ background: '#eba946' }}></span>
-          <span>&nbsp;Інтерв'ю</span>
+          <span>Інтерв'ю</span>
         </li>
         <li>
           <span style={{ background: '#84f59e' }}></span>
-          <span>&nbsp;Тестове завдання</span>
+          <span>Тестове завдання</span>
         </li>
         <li>
           <span style={{ background: '#56b858' }}></span>
-          <span>&nbsp;Прийнято</span>
+          <span>Прийнято</span>
         </li>
       </ul>
     </>

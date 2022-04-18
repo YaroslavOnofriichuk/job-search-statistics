@@ -23,7 +23,7 @@ export const Section = styled.section`
 `;
 
 export const Header = styled.header`
-  background-color: #0a4580;
+  background-color: #2c3e50;
 
   display: flex;
   flex-direction: row;
@@ -46,7 +46,7 @@ export const Header = styled.header`
   }
 
   .active svg {
-    fill: #185a9d;
+    fill: #3498db;
   }
 
   ul {
