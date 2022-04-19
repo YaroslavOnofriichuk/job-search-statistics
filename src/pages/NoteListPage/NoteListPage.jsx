@@ -5,7 +5,7 @@ import { StyledLink } from '../../components/GlobalStyle/Link.Styled';
 import { SortButtons } from '../../components/SortButtons/SortButtons';
 import { Filter } from '../../components/Filter/Filter';
 import { Div } from './NoteListPage.Styled';
-import { collection, getDocs, query } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { useUserContext } from '../../userContext/userContext';
 
@@ -29,6 +29,9 @@ export const NoteListPage = () => {
         const querySnapshot = await getDocs(collection(db, user.id));
         const newNotes = [];
         querySnapshot.forEach(doc => newNotes.push(doc.data()));
+        newNotes.sort((firstNote, secondNote) =>
+          secondNote.date.localeCompare(firstNote.date)
+        );
         setNotes(newNotes);
       } catch (error) {
         console.log(error);
