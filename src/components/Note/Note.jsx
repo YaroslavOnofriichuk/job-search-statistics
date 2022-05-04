@@ -3,26 +3,22 @@ import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { StyledNote } from './Note.styled';
 import { StyledLink } from '../GlobalStyle/Link.Styled';
 import { Button } from '../GlobalStyle/Button';
-import { Form } from '../CreateNote/CreateNote.Styled';
+import { DeleteModal } from '../DeleteModal/DeleteModal';
+import { ChangeModal } from '../ChangeModal/ChangeModal';
 import { formatDate } from '../../helpers';
 import { doc, updateDoc, getDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { useUserContext } from '../../userContext/userContext';
 import { toast } from 'react-toastify';
-import { useForm } from 'react-hook-form';
 
 export const Note = () => {
   const [note, setNote] = useState('');
-  const [isOpenForm, setIsOpenForm] = useState(false);
+  const [isOpenChangeForm, setIsOpenChangeForm] = useState(false);
+  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   const { noteId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useUserContext();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
 
   useEffect(() => {
     const fetchNote = async () => {
@@ -43,41 +39,56 @@ export const Note = () => {
     fetchNote();
   }, [noteId, user.id]);
 
-  const handleDelete = async () => {
-    try {
-      await deleteDoc(doc(db, user.id, noteId));
-      navigate(location?.state?.from ?? '/notes');
-    } catch (error) {
-      toast.error('Не вдалося видалити', {
-        style: { backgroundColor: '#47406f', color: '#ffffff' },
-      });
-      console.log(error);
+  const onDelete = async value => {
+    if (value) {
+      try {
+        await deleteDoc(doc(db, user.id, noteId));
+        setIsOpenDeleteModal(false);
+        navigate(location?.state?.from ?? '/notes');
+      } catch (error) {
+        setIsOpenDeleteModal(false);
+        toast.error('Не вдалося видалити', {
+          style: { backgroundColor: '#47406f', color: '#ffffff' },
+        });
+        console.log(error);
+      }
+    } else {
+      setIsOpenDeleteModal(false);
     }
   };
 
-  const handleChange = () => {
-    setIsOpenForm(!isOpenForm);
+  const openDeleteModal = () => {
+    setIsOpenDeleteModal(!isOpenDeleteModal);
+  };
+
+  const openChangeModal = () => {
+    setIsOpenChangeForm(!isOpenChangeForm);
   };
 
   const onSubmit = async data => {
-    try {
-      await updateDoc(doc(db, user.id, noteId), {
-        status: data.status,
-        description: data.description,
-      });
-      setNote(previousState => {
-        return {
-          ...previousState,
+    if (data) {
+      try {
+        await updateDoc(doc(db, user.id, noteId), {
           status: data.status,
           description: data.description,
-        };
-      });
-      setIsOpenForm(false);
-    } catch (error) {
-      toast.error('Не вдалося змінити', {
-        style: { backgroundColor: '#47406f', color: '#ffffff' },
-      });
-      console.log(error);
+        });
+        setNote(previousState => {
+          return {
+            ...previousState,
+            status: data.status,
+            description: data.description,
+          };
+        });
+        setIsOpenChangeForm(false);
+      } catch (error) {
+        setIsOpenChangeForm(false);
+        toast.error('Не вдалося змінити', {
+          style: { backgroundColor: '#47406f', color: '#ffffff' },
+        });
+        console.log(error);
+      }
+    } else {
+      setIsOpenChangeForm(false);
     }
   };
 
@@ -95,6 +106,12 @@ export const Note = () => {
           <span>Джерело</span> <span>{note.source}</span>
         </li>
         <li>
+          <span>Посилання</span>
+          <a href={note.url} target="blank" rel="noopener noreferrer">
+            {note.url}
+          </a>
+        </li>
+        <li>
           <span>Опис</span> <span>{note.description}</span>
         </li>
         <li>
@@ -106,45 +123,20 @@ export const Note = () => {
       </ul>
 
       <div>
-        <Button type="button" onClick={handleDelete}>
+        <Button type="button" onClick={openDeleteModal}>
           Видалити замітку
         </Button>
       </div>
 
       <div>
-        <Button type="button" onClick={handleChange}>
+        <Button type="button" onClick={openChangeModal}>
           Редагувати
         </Button>
-
-        {isOpenForm && (
-          <Form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
-            <label>
-              Змінити статус
-              <select
-                {...register('status', { required: true })}
-                defaultValue={note.status}
-              >
-                <option value="Надіслано">Надіслано</option>
-                <option value="Відхилено">Відхилено</option>
-                <option value="Розглядається">Розглядається</option>
-                <option value="Дзвінок рекрутера">Дзвінок рекрутера</option>
-                <option value="Інтерв'ю">Інтерв'ю</option>
-                <option value="Тестове завдання">Тестове завдання</option>
-                <option value="Прийнято">Прийнято</option>
-              </select>
-            </label>
-            <label>
-              Змінити опис
-              <textarea
-                {...register('description', {})}
-                defaultValue={note.description}
-                rows="4"
-              ></textarea>
-            </label>
-            <input type="submit" value="Зберегти" />
-          </Form>
-        )}
       </div>
+
+      {isOpenDeleteModal && <DeleteModal onDelete={onDelete} />}
+
+      {isOpenChangeForm && <ChangeModal note={note} onSubmit={onSubmit} />}
     </StyledNote>
   );
 };

@@ -6,7 +6,7 @@ import { useUserContext } from '../../userContext/userContext';
 
 export const Circle = () => {
   const [status, setStatus] = useState({
-    sent: 0,
+    send: 0,
     rejected: 0,
     considered: 0,
     call: 0,
@@ -14,6 +14,7 @@ export const Circle = () => {
     test: 0,
     offer: 0,
   });
+  const [statusLength, setStatusLength] = useState(0);
   const { user } = useUserContext();
 
   useEffect(() => {
@@ -23,7 +24,7 @@ export const Circle = () => {
         const notes = [];
         querySnapshot.forEach(doc => notes.push(doc.data()));
         setStatus({
-          sent: notes.filter(note => note.status === 'Надіслано').length,
+          send: notes.filter(note => note.status === 'Надіслано').length,
           rejected: notes.filter(note => note.status === 'Відхилено').length,
           considered: notes.filter(note => note.status === 'Розглядається')
             .length,
@@ -33,6 +34,7 @@ export const Circle = () => {
           test: notes.filter(note => note.status === 'Тестове завдання').length,
           offer: notes.filter(note => note.status === 'Прийнято').length,
         });
+        setStatusLength(notes.length);
       } catch (error) {
         console.log(error);
       }
@@ -44,7 +46,7 @@ export const Circle = () => {
   }, [user]);
 
   const data = [
-    { title: 'Надіслано', value: status.sent, color: '#8a9ab5' },
+    { title: 'Надіслано', value: status.send, color: '#8a9ab5' },
     { title: 'Відхилено', value: status.rejected, color: '#b84956' },
     { title: 'Розглядається', value: status.considered, color: '#6a92d4' },
     { title: 'Дзвінок рекрутера', value: status.call, color: '#d5db25' },
@@ -71,32 +73,36 @@ export const Circle = () => {
       />
       <ul>
         <li>
+          <span style={{ background: 'transparent' }}></span>
+          <span>Всього відгуків {statusLength} шт.</span>
+        </li>
+        <li>
           <span style={{ background: '#8a9ab5' }}></span>
-          <span>Надіслано</span>
+          <span>Надіслано {status.send} шт.</span>
         </li>
         <li>
           <span style={{ background: '#b84956' }}></span>
-          <span>Відхилено</span>
+          <span>Відхилено {status.rejected} шт.</span>
         </li>
         <li>
           <span style={{ background: '#6a92d4' }}></span>
-          <span>Розглядається</span>
+          <span>Розглядається {status.considered} шт.</span>
         </li>
         <li>
           <span style={{ background: '#d5db25' }}></span>
-          <span>Дзвінок рекрутера</span>
+          <span>Дзвінок рекрутера {status.call} шт.</span>
         </li>
         <li>
           <span style={{ background: '#eba946' }}></span>
-          <span>Інтерв'ю</span>
+          <span>Інтерв'ю {status.interview} шт.</span>
         </li>
         <li>
           <span style={{ background: '#84f59e' }}></span>
-          <span>Тестове завдання</span>
+          <span>Тестове завдання {status.test} шт.</span>
         </li>
         <li>
           <span style={{ background: '#56b858' }}></span>
-          <span>Прийнято</span>
+          <span>Прийнято {status.offer} шт.</span>
         </li>
       </ul>
     </>

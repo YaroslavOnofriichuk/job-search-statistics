@@ -6,6 +6,7 @@ import {
   BsCalendarWeek,
   BsPerson,
   BsArrowDownUp,
+  BsXLg,
 } from 'react-icons/bs';
 import PropTypes from 'prop-types';
 
@@ -69,6 +70,16 @@ export const SortIcon = ({ size = '2em', color = '#ffffff' }) => {
   );
 };
 
+export const CloseIcon = ({ size = '2em', color = '#ffffff' }) => {
+  return (
+    <IconContext.Provider value={{ color: `${color}`, size: `${size}` }}>
+      <div>
+        <BsXLg />
+      </div>
+    </IconContext.Provider>
+  );
+};
+
 HomeIcon.propTypes = {
   size: PropTypes.string,
   lcolor: PropTypes.string,
@@ -95,6 +106,11 @@ UserIcon.propTypes = {
 };
 
 SortIcon.propTypes = {
+  size: PropTypes.string,
+  lcolor: PropTypes.string,
+};
+
+CloseIcon.propTypes = {
   size: PropTypes.string,
   lcolor: PropTypes.string,
 };

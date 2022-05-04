@@ -100,6 +100,10 @@ export const CreateNote = () => {
           </select>
         </label>
         <label>
+          Посилання
+          <input type="url" {...register('url', { required: true })} />
+        </label>
+        <label>
           Опис
           <textarea {...register('description', {})} rows="4"></textarea>
         </label>

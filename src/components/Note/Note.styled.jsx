@@ -20,6 +20,10 @@ export const StyledNote = styled.div`
     flex-direction: column;
     align-items: center;
     overflow: hidden;
+
+    a {
+      text-decoration: underline;
+    }
   }
 
   span {
