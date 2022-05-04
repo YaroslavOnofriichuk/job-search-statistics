@@ -101,7 +101,7 @@ export const CreateNote = () => {
         </label>
         <label>
           Посилання
-          <input type="url" {...register('url', { required: true })} />
+          <input type="url" {...register('url')} />
         </label>
         <label>
           Опис
