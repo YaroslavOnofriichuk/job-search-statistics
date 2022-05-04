@@ -36,7 +36,7 @@ export const ChangeForm = () => {
   return (
     <>
       <StyledLink to={location?.state?.from ?? '/user'}>Назад</StyledLink>
-      <Tittle style={{ marginTop: '10px' }}>Змінити ім'я</Tittle>
+      <Tittle>Змінити ім'я</Tittle>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <label>
           Ім'я
