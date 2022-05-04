@@ -1,5 +1,6 @@
 import { Button } from '../GlobalStyle/Button';
 import { StyledDeleteModal } from './DeleteModal.Styled';
+import PropTypes from 'prop-types';
 
 export const DeleteModal = ({ onDelete }) => {
   const handleDelete = e => {
@@ -23,4 +24,8 @@ export const DeleteModal = ({ onDelete }) => {
       </div>
     </StyledDeleteModal>
   );
+};
+
+DeleteModal.propTypes = {
+  onDelete: PropTypes.func,
 };

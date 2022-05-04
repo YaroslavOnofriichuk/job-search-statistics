@@ -1,6 +1,7 @@
 import { ChangeModalForm } from './ChangeModal.Styled';
 import { CloseIcon } from '../icons/icons';
 import { useForm } from 'react-hook-form';
+import PropTypes from 'prop-types';
 
 export const ChangeModal = ({ note, onSubmit }) => {
   const { register, handleSubmit } = useForm();
@@ -43,4 +44,9 @@ export const ChangeModal = ({ note, onSubmit }) => {
       <input type="submit" value="Зберегти" />
     </ChangeModalForm>
   );
+};
+
+ChangeModal.propTypes = {
+  note: PropTypes.object,
+  onSubmit: PropTypes.func,
 };
