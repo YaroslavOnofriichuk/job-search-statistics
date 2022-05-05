@@ -3,8 +3,6 @@ import { lazy, Suspense } from 'react';
 import { Layout } from './Layout/Layout';
 import { Note } from './Note/Note';
 import { CreateNote } from './CreateNote/CreateNote';
-import { FeedbackSchedule } from './FeedbackSchedule/FeedbackSchedule';
-import { SourceChart } from './SourceChart/SourceChart';
 import { LoginForm } from './LoginForm/LoginForm';
 import { ChangeForm } from './ChangeForm/ChangeForm';
 import { RegisterForm } from './RegisterForm/RegisterForm';
@@ -74,31 +72,14 @@ export const App = () => {
                 </PrivateRoute>
               }
             />
-            {/* <Route
+            <Route
               path="statistic"
               element={
                 <PrivateRoute>
                   <StatisticPage />
                 </PrivateRoute>
               }
-            >
-              <Route
-                path="feedback"
-                element={
-                  <PrivateRoute>
-                    <FeedbackSchedule />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path="source"
-                element={
-                  <PrivateRoute>
-                    <SourceChart />
-                  </PrivateRoute>
-                }
-              />
-            </Route> */}
+            ></Route>
             <Route
               path="calendar"
               element={

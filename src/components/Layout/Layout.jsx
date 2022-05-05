@@ -24,11 +24,11 @@ export const Layout = () => {
                 <ListIcon />
               </NavLink>
             </li>
-            {/* <li>
+            <li>
               <NavLink to="statistic" activeclassname="active">
                 <StatisticIcon />
               </NavLink>
-            </li> */}
+            </li>
             <li>
               <NavLink to="calendar" activeclassname="active">
                 <CalendarIcon />
