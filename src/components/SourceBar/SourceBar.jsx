@@ -57,11 +57,6 @@ export const SourceBar = ({ notes }) => {
       legend: {
         position: 'top',
       },
-      title: {
-        display: true,
-        text: 'Статистика джерел',
-        color: '#ffffff',
-      },
     },
     scales: {
       yAxes: {
@@ -81,17 +76,13 @@ export const SourceBar = ({ notes }) => {
     },
   };
 
-  const labels = [
-    'Linkedin',
-    'Djinni',
-    'jobs.dou.ua',
-    'work.ua',
-    'rabota.ua',
-    'ua.jooble.org',
-    'grc.ua',
-    'recruitica.com',
-    'other',
-  ];
+  const labels = notes.reduce((acc, note) => {
+    if (acc.includes(note.source)) {
+      return acc;
+    } else {
+      return [...acc, note.source];
+    }
+  }, []);
 
   const data = {
     labels,
@@ -144,7 +135,9 @@ export const SourceBar = ({ notes }) => {
           <input type="radio" value="Прийнято" name="status"></input>
         </label>
       </form>
-      <Bar options={options} data={data} />
+      <div>
+        <Bar options={options} data={data} />
+      </div>
     </BarSection>
   );
 };

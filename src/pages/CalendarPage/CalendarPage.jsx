@@ -7,6 +7,7 @@ import { checkColor } from '../../helpers';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { useUserContext } from '../../userContext/userContext';
+import { CalendarSection } from './CalendarPage.Styled';
 
 export const CalendarPage = () => {
   const [events, setEvents] = useState(null);
@@ -45,7 +46,7 @@ export const CalendarPage = () => {
   };
 
   return (
-    <>
+    <CalendarSection>
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
@@ -54,6 +55,6 @@ export const CalendarPage = () => {
         locale="uk"
         firstDay="1"
       />
-    </>
+    </CalendarSection>
   );
 };

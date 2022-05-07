@@ -2,6 +2,8 @@ import styled from 'styled-components';
 
 export const BarSection = styled.section`
   font-size: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
 
   form {
     display: flex;

@@ -3,8 +3,10 @@ import { useUserContext } from '../../userContext/userContext';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { SourceBar } from '../../components/SourceBar/SourceBar';
-import { Circle } from '../../components/Circle/Circle';
+import { FeedbackPie } from '../../components/FeedbackPie/FeedbackPie';
+import { TimeChart } from '../../components/TimeChart/TimeChart';
 import { Button } from '../../components/GlobalStyle/Button';
+import { StatisticSection } from './StatisticPage.Styled';
 
 export const StatisticPage = () => {
   const [notes, setNotes] = useState(null);
@@ -36,7 +38,7 @@ export const StatisticPage = () => {
   };
 
   return (
-    <>
+    <StatisticSection>
       <ul>
         <li>
           <Button data="source" onClick={handleClick}>
@@ -44,13 +46,19 @@ export const StatisticPage = () => {
           </Button>
         </li>
         <li>
-          <Button data="circle" onClick={handleClick}>
+          <Button data="pie" onClick={handleClick}>
             Статистика відгуків
+          </Button>
+        </li>
+        <li>
+          <Button data="time" onClick={handleClick}>
+            Статистика відгуків по часу
           </Button>
         </li>
       </ul>
       {notes && visibleChart === 'source' && <SourceBar notes={notes} />}
-      {notes && visibleChart === 'circle' && <Circle notes={notes} />}
-    </>
+      {notes && visibleChart === 'pie' && <FeedbackPie notes={notes} />}
+      {notes && visibleChart === 'time' && <TimeChart notes={notes} />}
+    </StatisticSection>
   );
 };

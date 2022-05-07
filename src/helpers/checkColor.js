@@ -11,7 +11,9 @@ export const checkColor = status => {
     return '#eba946';
   } else if (status === 'Тестове завдання') {
     return '#84f59e';
-  } else {
+  } else if (status === 'Надіслано') {
     return '#8a9ab5';
+  } else {
+    return '#edeff2';
   }
 };
