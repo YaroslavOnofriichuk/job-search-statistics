@@ -9,8 +9,10 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import 'chartjs-adapter-date-fns';
-import { uk, enGB } from 'date-fns/locale';
+import { useEffect, useState } from 'react';
+import { generateTimeLabels, getDataToTimeChart } from '../../helpers';
+import { TimeChartSection } from './TimeChart.Styled';
+import PropTypes from 'prop-types';
 
 ChartJS.register(
   CategoryScale,
@@ -23,15 +25,43 @@ ChartJS.register(
 );
 
 export const TimeChart = ({ notes }) => {
+  const [sortedNotes, setSortedNotes] = useState(
+    notes.sort((firstNote, secondNote) =>
+      firstNote.date.localeCompare(secondNote.date)
+    )
+  );
+  const [visiblePeriod, setVisiblePeriod] = useState('day');
+  const [labels, setLabels] = useState(
+    generateTimeLabels(visiblePeriod, sortedNotes)
+  );
+  const [dataset, setDataset] = useState(getDataToTimeChart(sortedNotes));
+
+  useEffect(() => {
+    setSortedNotes(
+      notes.sort((firstNote, secondNote) =>
+        firstNote.date.localeCompare(secondNote.date)
+      )
+    );
+
+    setLabels(generateTimeLabels(visiblePeriod, sortedNotes));
+
+    setDataset(getDataToTimeChart(sortedNotes));
+
+    console.log('labels', labels);
+    // console.log(dataset);
+  }, [notes, sortedNotes, visiblePeriod]);
+
   const options = {
     responsive: true,
+    color: '#ffffff',
     plugins: {
       legend: {
         position: 'top',
       },
       title: {
         display: true,
-        text: 'Chart.js Line Chart',
+        text: `Всього відгуків ${notes.length}`,
+        color: '#ffffff',
       },
     },
     scales: {
@@ -48,91 +78,46 @@ export const TimeChart = ({ notes }) => {
           color: '#ffffff',
           fontSize: 16,
         },
-        adapters: {
-          date: { locale: uk },
-          type: 'time',
-          distribution: 'linear',
-          time: {
-            parser: 'yyyy-MM-dd',
-            unit: 'month',
-          },
-        },
       },
     },
   };
 
-  const labels = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-  ];
-
   const data = {
-    labels,
-    datasets: [
-      {
-        label: 'Dataset 1',
-        data: [1, 2, 3, 2],
-        borderColor: 'rgb(255, 99, 132)',
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-      },
-      {
-        label: 'Dataset 2',
-        data: [1, 2, 3, 8],
-        borderColor: 'rgb(53, 162, 235)',
-        backgroundColor: 'rgba(53, 162, 235, 0.5)',
-      },
-    ],
+    labels: labels.map(label => (label = label.toLocaleString().slice(0, 10))),
+    datasets: dataset,
   };
 
-  // const options = {
-  //   scales: {
-  //     y: {
-  //       title: { display: true, text: 'Weight in lbs' },
-  //     },
-  //     x: {
-  //       adapters: {
-  //         date: { locale: enGB },
-  //         type: 'time',
-  //         distribution: 'linear',
-  //         time: {
-  //           parser: 'yyyy-MM-dd',
-  //           unit: 'month',
-  //         },
-  //         title: {
-  //           display: true,
-  //           text: 'Date',
-  //         },
-  //       },
-  //     },
-  //   },
-  // };
+  const onChange = e => {
+    setVisiblePeriod(e.target.defaultValue);
+  };
 
-  // const data = {
-  //   datasets: [
-  //     {
-  //       label: 'Check-Ins',
-  //       data: goalCheckIns,
-  //       borderColor: 'rgb(53, 162, 235)',
-  //       backgroundColor: 'rgba(53, 162, 235, 0.5)',
-  //       showLine: true,
-  //     },
-  //     {
-  //       label: 'Goal',
-  //       data: [
-  //         { x: startDate, y: currentWeight },
-  //         { x: endDate, y: currentGoal.goal_weight },
-  //       ],
-  //       borderColor: '#FFCE0E',
-  //       backgroundColor: '#FFCE0E',
-  //       borderDash: [3],
-  //     },
-  //   ],
-  // };
+  return (
+    <TimeChartSection>
+      <form onChange={onChange}>
+        <label>
+          День
+          <input type="radio" value="day" name="period" defaultChecked></input>
+        </label>
+        <label>
+          Тиждень
+          <input type="radio" value="week" name="period"></input>
+        </label>
+        <label>
+          Місяць
+          <input type="radio" value="month" name="period"></input>
+        </label>
+        <label>
+          Рік
+          <input type="radio" value="year" name="period"></input>
+        </label>
+      </form>
+      <div>
+        <Line options={options} data={data} />
+      </div>
+    </TimeChartSection>
+  );
+};
 
-  return <Line options={options} data={data} />;
+TimeChart.propTypes = {
+  notes: PropTypes.array,
 };

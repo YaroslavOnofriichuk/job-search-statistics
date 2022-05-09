@@ -57,6 +57,11 @@ export const SourceBar = ({ notes }) => {
       legend: {
         position: 'top',
       },
+      title: {
+        display: true,
+        text: `Всього відгуків ${notes.length}`,
+        color: '#ffffff',
+      },
     },
     scales: {
       yAxes: {

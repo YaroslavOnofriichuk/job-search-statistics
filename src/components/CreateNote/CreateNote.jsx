@@ -95,13 +95,13 @@ export const CreateNote = () => {
         <label>
           Позиція
           <input type="text" {...register('position', { required: true })} />
-          {errors.position?.type === 'required' && "Обов'язкове поле"}
+          {errors.position?.type === 'required' && "Обов'язкове поле*"}
         </label>
 
         <label>
           Компанія
           <input type="text" {...register('company', { required: true })} />
-          {errors.company?.type === 'required' && "Обов'язкове поле"}
+          {errors.company?.type === 'required' && "Обов'язкове поле*"}
         </label>
 
         <label>
@@ -110,19 +110,23 @@ export const CreateNote = () => {
             type="datetime-local"
             {...register('date', { required: true })}
           />
-          {errors.date?.type === 'required' && "Обов'язкове поле"}
+          {errors.date?.type === 'required' && "Обов'язкове поле*"}
         </label>
 
         <label>
           Джерело
           <select {...register('source', { required: true })}>
             {defaultSources.map(source => (
-              <option value={source}>{source}</option>
+              <option key={source} value={source}>
+                {source}
+              </option>
             ))}
             {sources
               .filter(source => !defaultSources.includes(source))
               .map(source => (
-                <option value={source}>{source}</option>
+                <option key={source} value={source}>
+                  {source}
+                </option>
               ))}
             <option value="other">інше</option>
           </select>
@@ -135,7 +139,7 @@ export const CreateNote = () => {
               type="text"
               {...register('customSource', { required: true })}
             />
-            {errors.customSource?.type === 'required' && "Обов'язкове поле"}
+            {errors.customSource?.type === 'required' && "Обов'язкове поле*"}
           </label>
         )}
 

@@ -52,7 +52,7 @@ export const StatisticPage = () => {
         </li>
         <li>
           <Button data="time" onClick={handleClick}>
-            Статистика відгуків по часу
+            Динаміка відгуків
           </Button>
         </li>
       </ul>
