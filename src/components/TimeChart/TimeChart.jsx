@@ -46,9 +46,6 @@ export const TimeChart = ({ notes }) => {
     setLabels(generateTimeLabels(visiblePeriod, sortedNotes));
 
     setDataset(getDataToTimeChart(sortedNotes));
-
-    console.log('labels', labels);
-    // console.log(dataset);
   }, [notes, sortedNotes, visiblePeriod]);
 
   const options = {
@@ -60,7 +57,7 @@ export const TimeChart = ({ notes }) => {
       },
       title: {
         display: true,
-        text: `Всього відгуків ${notes.length}`,
+        text: `Всього відгуків на вакансії ${notes.length} шт.`,
         color: '#ffffff',
       },
     },
@@ -93,7 +90,7 @@ export const TimeChart = ({ notes }) => {
 
   return (
     <TimeChartSection>
-      <form onChange={onChange}>
+      {/* <form onChange={onChange}>
         <label>
           День
           <input type="radio" value="day" name="period" defaultChecked></input>
@@ -110,7 +107,7 @@ export const TimeChart = ({ notes }) => {
           Рік
           <input type="radio" value="year" name="period"></input>
         </label>
-      </form>
+      </form> */}
       <div>
         <Line options={options} data={data} />
       </div>

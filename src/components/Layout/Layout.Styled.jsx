@@ -35,26 +35,38 @@ export const Header = styled.header`
   bottom: 0;
   width: 100%;
   height: 60px;
-  z-index: 1;
+  z-index: 1000;
 
   a {
-    width: 100px;
-    height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 
   .active svg {
     fill: #3498db;
   }
 
+  nav {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   ul {
     display: flex;
     flex-direction: row;
+    justify-content: space-evenly;
+    width: 400px;
 
     @media (min-width: 1170px) {
       flex-direction: column;
+      height: 500px;
+      width: 100px;
     }
   }
 

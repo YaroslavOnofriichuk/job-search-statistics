@@ -1,9 +1,8 @@
 import { StyledLink } from '../../components/GlobalStyle/Link.Styled';
 import { useLocation } from 'react-router-dom';
 import { useUserContext } from '../../userContext/userContext';
-import { Tittle } from '../../components/GlobalStyle/Tittle';
 import { HomePageSection } from './HomePage.Styled';
-import { Circle } from '../../components/Circle/Circle';
+import { ImageList } from '../../components/ImageList/ImageList';
 
 export const HomePage = () => {
   const { isLoggedIn } = useUserContext();
@@ -11,23 +10,18 @@ export const HomePage = () => {
 
   return (
     <HomePageSection>
-      <Tittle>Статистика пошуку роботи</Tittle>
-      {!isLoggedIn && (
-        <div>
-          <StyledLink to="/user/register" state={{ from: location }}>
-            Зареєструватися
-          </StyledLink>
+      {/* {!isLoggedIn && ( */}
+      {/* <div>
+        <StyledLink to="/user/register" state={{ from: location }}>
+          Зареєструватися
+        </StyledLink>
 
-          <StyledLink to="/user/login" state={{ from: location }}>
-            Авторизуватися
-          </StyledLink>
-        </div>
-      )}
-      {isLoggedIn && (
-        <div>
-          <Circle />
-        </div>
-      )}
+        <StyledLink to="/user/login" state={{ from: location }}>
+          Авторизуватися
+        </StyledLink>
+      </div> */}
+      {/* )} */}
+      <ImageList />
     </HomePageSection>
   );
 };

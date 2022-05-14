@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 export const PrivateRoute = ({ children }) => {
   const { isLoggedIn } = useUserContext();
 
-  return isLoggedIn ? children : <Navigate to="/user" />;
+  return isLoggedIn ? children : <Navigate to="/home" />;
 };
 
 PrivateRoute.propTypes = {

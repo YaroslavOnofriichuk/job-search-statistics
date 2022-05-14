@@ -59,7 +59,7 @@ export const SourceBar = ({ notes }) => {
       },
       title: {
         display: true,
-        text: `Всього відгуків ${notes.length}`,
+        text: `Всього відгуків на вакансії ${notes.length} шт.`,
         color: '#ffffff',
       },
     },

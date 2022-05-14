@@ -30,6 +30,7 @@ export const getDataToTimeChart = notes => {
       data: filteredData,
       backgroundColor: checkColor(status),
       borderColor: checkColor(status),
+      tension: 0.4,
     });
   });
 
@@ -48,6 +49,7 @@ export const getDataToTimeChart = notes => {
       }, {}),
       backgroundColor: '#edeff2',
       borderColor: '#edeff2',
+      tension: 0.4,
     },
   ];
 };
