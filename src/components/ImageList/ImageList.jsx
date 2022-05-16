@@ -1,4 +1,4 @@
-import { useEffect, useState, lazy } from 'react';
+import { useState } from 'react';
 import { ImageListSection } from './ImageList.Styled';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { InView } from 'react-intersection-observer';
@@ -31,8 +31,10 @@ export const ImageList = () => {
           as="li"
           onChange={(inView, entry) => inView && handleEnter('create')}
         >
-          <p>1</p>
-
+          <p>
+            Для того щоб зробити процес пошуку роботи більш ефективним, записуй
+            кожен свій відгук на вакансію
+          </p>
           <picture>
             <source
               media="(min-width: 1170px)"
@@ -57,16 +59,12 @@ export const ImageList = () => {
                 src="#"
                 loading="lazy"
                 alt="create"
-                // width="600px"
-
                 className={imageClass.create}
               />
             ) : (
               <LazyLoadImage
                 alt="create"
-                // height="500px"
                 src="#"
-                // width="500px"
                 className={imageClass.create}
               />
             )}
@@ -77,7 +75,7 @@ export const ImageList = () => {
           as="li"
           onChange={(inView, entry) => inView && handleEnter('list')}
         >
-          <p>2</p>
+          <p>Тримай всі записи під рукою</p>
           <picture>
             <source
               media="(min-width: 1170px)"
@@ -93,7 +91,7 @@ export const ImageList = () => {
             <source media="(min-width: 660px)" srcSet={images.listTabJpg} />
             <source
               media="(min-width: 200px)"
-              srcSet={images.listTabWebp}
+              srcSet={images.listTelWebp}
               type="image/webp"
             />
             <source media="(min-width: 200px)" srcSet={images.listTelJpg} />
@@ -102,61 +100,10 @@ export const ImageList = () => {
                 src="#"
                 loading="lazy"
                 alt="list"
-                width="600px"
                 className={imageClass.list}
               />
             ) : (
-              <LazyLoadImage
-                alt="list"
-                height="500px"
-                src="#"
-                width="500px"
-                className={imageClass.list}
-              />
-            )}
-          </picture>
-        </InView>
-
-        <InView
-          as="li"
-          onChange={(inView, entry) => inView && handleEnter('calendar')}
-        >
-          <p>3</p>
-          <picture>
-            <source
-              media="(min-width: 1170px)"
-              srcSet={images.calendarPCWebp}
-              type="image/webp"
-            />
-            <source media="(min-width: 1170px)" srcSet={images.calendarPCJpg} />
-            <source
-              media="(min-width: 660px)"
-              srcSet={images.calendarTabWebp}
-              type="image/webp"
-            />
-            <source media="(min-width: 660px)" srcSet={images.calendarTabJpg} />
-            <source
-              media="(min-width: 200px)"
-              srcSet={images.calendarTelWebp}
-              type="image/webp"
-            />
-            <source media="(min-width: 200px)" srcSet={images.calendarTelJpg} />
-            {lazy ? (
-              <img
-                src="#"
-                loading="lazy"
-                alt="calendar"
-                width="600px"
-                className={imageClass.calendar}
-              />
-            ) : (
-              <LazyLoadImage
-                alt="calendar"
-                height="500px"
-                src="#"
-                width="500px"
-                className={imageClass.calendar}
-              />
+              <LazyLoadImage alt="list" src="#" className={imageClass.list} />
             )}
           </picture>
         </InView>
@@ -165,7 +112,7 @@ export const ImageList = () => {
           as="li"
           onChange={(inView, entry) => inView && handleEnter('change')}
         >
-          <p>4</p>
+          <p>За потреби внось зміни в замітки</p>
           <picture>
             <source
               media="(min-width: 1170px)"
@@ -190,16 +137,54 @@ export const ImageList = () => {
                 src="#"
                 loading="lazy"
                 alt="change"
-                width="600px"
                 className={imageClass.change}
               />
             ) : (
               <LazyLoadImage
                 alt="change"
-                height="500px"
                 src="#"
-                width="500px"
                 className={imageClass.change}
+              />
+            )}
+          </picture>
+        </InView>
+
+        <InView
+          as="li"
+          onChange={(inView, entry) => inView && handleEnter('calendar')}
+        >
+          <p>Переглядай замітки в календарі</p>
+          <picture>
+            <source
+              media="(min-width: 1170px)"
+              srcSet={images.calendarPCWebp}
+              type="image/webp"
+            />
+            <source media="(min-width: 1170px)" srcSet={images.calendarPCJpg} />
+            <source
+              media="(min-width: 660px)"
+              srcSet={images.calendarTabWebp}
+              type="image/webp"
+            />
+            <source media="(min-width: 660px)" srcSet={images.calendarTabJpg} />
+            <source
+              media="(min-width: 200px)"
+              srcSet={images.calendarTelWebp}
+              type="image/webp"
+            />
+            <source media="(min-width: 200px)" srcSet={images.calendarTelJpg} />
+            {lazy ? (
+              <img
+                src="#"
+                loading="lazy"
+                alt="calendar"
+                className={imageClass.calendar}
+              />
+            ) : (
+              <LazyLoadImage
+                alt="calendar"
+                src="#"
+                className={imageClass.calendar}
               />
             )}
           </picture>
@@ -209,7 +194,7 @@ export const ImageList = () => {
           as="li"
           onChange={(inView, entry) => inView && handleEnter('statistic')}
         >
-          <p>5</p>
+          <p>Аналізуй статистику</p>
           <picture>
             <source
               media="(min-width: 1170px)"
@@ -243,20 +228,20 @@ export const ImageList = () => {
                 src="#"
                 loading="lazy"
                 alt="statistic"
-                width="600px"
                 className={imageClass.statistic}
               />
             ) : (
               <LazyLoadImage
                 alt="statistic"
-                height="500px"
                 src="#"
-                width="500px"
                 className={imageClass.statistic}
               />
             )}
           </picture>
         </InView>
+        <li>
+          <p>Удачі в пошуках роботи твоєї мрії !!!</p>
+        </li>
       </ul>
     </ImageListSection>
   );

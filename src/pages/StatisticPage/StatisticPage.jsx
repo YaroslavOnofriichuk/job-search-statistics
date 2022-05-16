@@ -50,11 +50,13 @@ export const StatisticPage = () => {
             Статистика відгуків
           </Button>
         </li>
-        <li>
-          <Button data="time" onClick={handleClick}>
-            Динаміка відгуків
-          </Button>
-        </li>
+        {window.innerWidth > 560 && (
+          <li>
+            <Button data="time" onClick={handleClick}>
+              Динаміка відгуків
+            </Button>
+          </li>
+        )}
       </ul>
       {notes && visibleChart === 'source' && <SourceBar notes={notes} />}
       {notes && visibleChart === 'pie' && <FeedbackPie notes={notes} />}
