@@ -33,7 +33,7 @@ export const Ul = styled.ul`
     }
 
     @media (min-width: 660px) {
-      width: 16%;
+      width: 100%;
 
       &:nth-child(n + 4) {
         display: flex;

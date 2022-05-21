@@ -4,6 +4,7 @@ export const StyledNote = styled.div`
   ul {
     max-width: 600px;
     margin: 20px auto;
+    padding: 5px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -15,11 +16,14 @@ export const StyledNote = styled.div`
 
   li {
     width: 100%;
-    margin-bottom: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
     overflow: hidden;
+
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
 
     a {
       text-decoration: underline;

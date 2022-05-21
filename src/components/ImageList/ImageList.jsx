@@ -1,12 +1,10 @@
 import { useState } from 'react';
 import { ImageListSection } from './ImageList.Styled';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { InView } from 'react-intersection-observer';
 
 import { images } from '../../images/index';
 
 export const ImageList = () => {
-  const [lazy] = useState('loading' in HTMLImageElement.prototype);
   const [imageClass, setImageClass] = useState({
     create: 'disappear',
     list: 'disappear',
@@ -54,20 +52,13 @@ export const ImageList = () => {
               type="image/webp"
             />
             <source media="(min-width: 200px)" srcSet={images.createTelJpg} />
-            {lazy ? (
-              <img
-                src="#"
-                loading="lazy"
-                alt="create"
-                className={imageClass.create}
-              />
-            ) : (
-              <LazyLoadImage
-                alt="create"
-                src="#"
-                className={imageClass.create}
-              />
-            )}
+            <img
+              src="#"
+              alt="create"
+              height="450px"
+              width="100%"
+              className={imageClass.create}
+            />
           </picture>
         </InView>
 
@@ -95,16 +86,13 @@ export const ImageList = () => {
               type="image/webp"
             />
             <source media="(min-width: 200px)" srcSet={images.listTelJpg} />
-            {lazy ? (
-              <img
-                src="#"
-                loading="lazy"
-                alt="list"
-                className={imageClass.list}
-              />
-            ) : (
-              <LazyLoadImage alt="list" src="#" className={imageClass.list} />
-            )}
+            <img
+              src="#"
+              alt="list"
+              height="450px"
+              width="100%"
+              className={imageClass.list}
+            />
           </picture>
         </InView>
 
@@ -132,20 +120,14 @@ export const ImageList = () => {
               type="image/webp"
             />
             <source media="(min-width: 200px)" srcSet={images.changeTelJpg} />
-            {lazy ? (
-              <img
-                src="#"
-                loading="lazy"
-                alt="change"
-                className={imageClass.change}
-              />
-            ) : (
-              <LazyLoadImage
-                alt="change"
-                src="#"
-                className={imageClass.change}
-              />
-            )}
+            <img
+              src="#"
+              alt="change"
+              loading="lazy"
+              height="450px"
+              width="100%"
+              className={imageClass.change}
+            />
           </picture>
         </InView>
 
@@ -173,20 +155,14 @@ export const ImageList = () => {
               type="image/webp"
             />
             <source media="(min-width: 200px)" srcSet={images.calendarTelJpg} />
-            {lazy ? (
-              <img
-                src="#"
-                loading="lazy"
-                alt="calendar"
-                className={imageClass.calendar}
-              />
-            ) : (
-              <LazyLoadImage
-                alt="calendar"
-                src="#"
-                className={imageClass.calendar}
-              />
-            )}
+            <img
+              src="#"
+              loading="lazy"
+              alt="calendar"
+              height="450px"
+              width="100%"
+              className={imageClass.calendar}
+            />
           </picture>
         </InView>
 
@@ -223,20 +199,14 @@ export const ImageList = () => {
               media="(min-width: 200px)"
               srcSet={images.statisticTelJpg}
             />
-            {lazy ? (
-              <img
-                src="#"
-                loading="lazy"
-                alt="statistic"
-                className={imageClass.statistic}
-              />
-            ) : (
-              <LazyLoadImage
-                alt="statistic"
-                src="#"
-                className={imageClass.statistic}
-              />
-            )}
+            <img
+              src="#"
+              loading="lazy"
+              alt="statistic"
+              height="450px"
+              width="100%"
+              className={imageClass.statistic}
+            />
           </picture>
         </InView>
         <li>

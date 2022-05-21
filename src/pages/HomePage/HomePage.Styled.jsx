@@ -19,6 +19,6 @@ export const HomePageSection = styled.section`
 
     background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
     top: 0;
-    left: 0;
+    left: 100;
   }
 `;

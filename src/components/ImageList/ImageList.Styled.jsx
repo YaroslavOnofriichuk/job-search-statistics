@@ -24,7 +24,6 @@ export const ImageListSection = styled.section`
   img {
     border: 3px solid #ffffff;
     border-radius: 5px;
-    height: 450px;
   }
 
   .disappear {

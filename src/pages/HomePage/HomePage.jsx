@@ -10,17 +10,24 @@ export const HomePage = () => {
 
   return (
     <HomePageSection>
-      {!isLoggedIn && (
-        <div>
-          <StyledLink to="/user/register" state={{ from: location }}>
-            Зареєструватися
+      <div>
+        {isLoggedIn ? (
+          <StyledLink to="/notes/create" state={{ from: location }}>
+            Створити замітку
           </StyledLink>
+        ) : (
+          <>
+            <StyledLink to="/user/register" state={{ from: location }}>
+              Зареєструватися
+            </StyledLink>
 
-          <StyledLink to="/user/login" state={{ from: location }}>
-            Авторизуватися
-          </StyledLink>
-        </div>
-      )}
+            <StyledLink to="/user/login" state={{ from: location }}>
+              Авторизуватися
+            </StyledLink>
+          </>
+        )}
+      </div>
+
       <ImageList />
     </HomePageSection>
   );
