@@ -50,4 +50,19 @@ export const Form = styled.form`
     color: #ffffff;
     resize: none;
   }
+
+  input[type='file'] {
+    display: none;
+  }
+
+  .avatar {
+    width: 100%;
+    height: 30px;
+    margin-top: 5px;
+    border: 1px solid #ffffff;
+    border-radius: 1px;
+    background: transparent;
+    color: #ffffff;
+    cursor: pointer;
+  }
 `;

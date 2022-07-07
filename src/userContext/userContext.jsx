@@ -15,6 +15,7 @@ export const useUserContext = () => useContext(UserContext);
 export const UserProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
 
   useEffect(() => {
     const auth = getAuth();
@@ -37,12 +38,14 @@ export const UserProvider = ({ children }) => {
 
   const logIn = useCallback(data => {
     setIsLoggedIn(true);
-    setUser(data);
+    setUser(data.user);
+    setToken(data.token);
   }, []);
 
   const logOut = useCallback(() => {
     setIsLoggedIn(false);
     setUser(null);
+    setToken(null);
   }, []);
 
   const changeUser = useCallback(data => {

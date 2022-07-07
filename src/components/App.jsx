@@ -5,6 +5,7 @@ import { Note } from './Note/Note';
 import { CreateNote } from './CreateNote/CreateNote';
 import { LoginForm } from './LoginForm/LoginForm';
 import { ChangeForm } from './ChangeForm/ChangeForm';
+import { ChangeAvatarForm } from './ChangeAvatarForm/ChangeAvatarForm';
 import { RegisterForm } from './RegisterForm/RegisterForm';
 import { GlobalStyle } from './GlobalStyle/GlobalStyle';
 import { UserProvider } from '../userContext/userContext';
@@ -110,6 +111,14 @@ export const App = () => {
               element={
                 <PrivateRoute>
                   <ChangeForm />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="user/avatar"
+              element={
+                <PrivateRoute>
+                  <ChangeAvatarForm />
                 </PrivateRoute>
               }
             />

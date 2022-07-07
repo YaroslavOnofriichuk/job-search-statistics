@@ -1,19 +1,18 @@
 import { Button } from '../../components/GlobalStyle/Button';
-import { UserIcon } from '../../components/icons/icons';
 import { StyledLink } from '../../components/GlobalStyle/Link.Styled';
+import { Avatar } from '../../components/Avatar/Avatar';
 import { UserPageSection } from './UserPage.Styled';
-import { getAuth, signOut } from 'firebase/auth';
 import { useLocation } from 'react-router-dom';
 import { useUserContext } from '../../userContext/userContext';
+import { logOutUser } from '../../services/API';
 
 export const UserPage = () => {
-  const auth = getAuth();
   const { isLoggedIn, user, logOut } = useUserContext();
   const location = useLocation();
 
   const handleLogOut = async () => {
     try {
-      await signOut(auth);
+      await logOutUser();
       logOut();
     } catch (error) {
       console.log(error);
@@ -22,7 +21,7 @@ export const UserPage = () => {
 
   return (
     <UserPageSection>
-      <UserIcon size="5em" />
+      <Avatar />
 
       {isLoggedIn && <h2>{user?.name || user?.email}</h2>}
 
@@ -40,7 +39,13 @@ export const UserPage = () => {
 
       {isLoggedIn && (
         <StyledLink to="change" state={{ from: location }}>
-          Редагувати профіль
+          Змінити ім'я
+        </StyledLink>
+      )}
+
+      {isLoggedIn && (
+        <StyledLink to="avatar" state={{ from: location }}>
+          Змінити аватар
         </StyledLink>
       )}
 

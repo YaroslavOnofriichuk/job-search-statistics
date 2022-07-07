@@ -5,9 +5,9 @@ import { StyledLink } from '../GlobalStyle/Link.Styled';
 import { Tittle } from '../GlobalStyle/Tittle';
 import { useUserContext } from '../../userContext/userContext';
 import { toast } from 'react-toastify';
-import { changeName } from '../../services/API';
+import { changeAvatar } from '../../services/API';
 
-export const ChangeForm = () => {
+export const ChangeAvatarForm = () => {
   const {
     register,
     handleSubmit,
@@ -17,9 +17,11 @@ export const ChangeForm = () => {
   const location = useLocation();
   const { changeUser } = useUserContext();
 
-  const handleNameChange = async data => {
+  const handleAvatarChange = async data => {
+    const formData = new FormData();
+    formData.append('avatar', data.avatar[0]);
     try {
-      const user = await changeName(data);
+      const user = await changeAvatar(formData);
       changeUser(user.data);
       navigate(-1);
     } catch (error) {
@@ -33,12 +35,16 @@ export const ChangeForm = () => {
   return (
     <>
       <StyledLink to={location?.state?.from ?? '/user'}>Назад</StyledLink>
-      <Tittle>Змінити ім'я</Tittle>
-      <Form onSubmit={handleSubmit(handleNameChange)}>
-        <label>
-          Ім'я
-          <input type="text" {...register('name', { required: true })} />
-          {errors.name?.type === 'required' && "Обов'язкове поле"}
+      <Tittle>Змінити аватар</Tittle>
+      <Form onSubmit={handleSubmit(handleAvatarChange)}>
+        <label className="avatar">
+          Вибрати файл
+          <input
+            type="file"
+            accept=".jpg,.jpeg,.png,.bmp,.tiff,.gif"
+            {...register('avatar', { required: true })}
+          />
+          {errors.avatar?.type === 'required' && "Обов'язкове поле"}
         </label>
         <input type="submit" value="Зберегти" />
       </Form>

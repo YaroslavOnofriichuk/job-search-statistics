@@ -3,9 +3,9 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Form } from '../CreateNote/CreateNote.Styled';
 import { StyledLink } from '../GlobalStyle/Link.Styled';
 import { Tittle } from '../GlobalStyle/Tittle';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { useUserContext } from '../../userContext/userContext';
 import { toast } from 'react-toastify';
+import { loginUser } from '../../services/API';
 
 export const LoginForm = () => {
   const {
@@ -15,39 +15,18 @@ export const LoginForm = () => {
   } = useForm();
   const navigate = useNavigate();
   const location = useLocation();
-  const auth = getAuth();
   const { logIn } = useUserContext();
 
   const onSubmit = async data => {
     try {
-      const user = await signInWithEmailAndPassword(
-        auth,
-        data.email,
-        data.password
-      );
-      logIn({
-        email: user.user.email,
-        token: user.user.accessToken,
-        id: user.user.uid,
-        name: user.user.displayName,
-        image: user.user.photoURL,
-      });
+      const user = await loginUser(data);
+      logIn(user.data);
       navigate(-1);
     } catch (error) {
-      if (error.code === 'auth/user-not-found') {
-        toast.error('Невірний імейл', {
-          style: { backgroundColor: '#47406f', color: '#ffffff' },
-        });
-      } else if (error.code === 'auth/wrong-password') {
-        toast.error('Невірний пароль', {
-          style: { backgroundColor: '#47406f', color: '#ffffff' },
-        });
-      } else {
-        toast.error('Не вдалося авторизуватися', {
-          style: { backgroundColor: '#47406f', color: '#ffffff' },
-        });
-        console.log('error', error);
-      }
+      console.log(error);
+      toast.error(error.response.data.message, {
+        style: { backgroundColor: '#47406f', color: '#ffffff' },
+      });
     }
   };
 
