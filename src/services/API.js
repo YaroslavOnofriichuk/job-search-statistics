@@ -42,3 +42,30 @@ export const getCurrentUser = async () => {
   const user = await axios.get('users/current');
   return user;
 };
+
+export const addNote = async data => {
+  const note = await axios.post('notes', data);
+  return note;
+};
+
+export const getAllNotes = async (sortfield = 'date', sortType = 'desc') => {
+  const notes = await axios.get(
+    `notes/?sortfield=${sortfield}&sortType=${sortType}`
+  );
+  return notes;
+};
+
+export const getOneNote = async id => {
+  const note = await axios.get(`notes/${id}`);
+  return note;
+};
+
+export const deleteNote = async id => {
+  const note = await axios.delete(`notes/${id}`);
+  return note;
+};
+
+export const updateNote = async (id, data) => {
+  const note = await axios.patch(`notes/${id}`, data);
+  return note;
+};

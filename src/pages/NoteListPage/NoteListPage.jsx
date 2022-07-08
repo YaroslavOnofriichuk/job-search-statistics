@@ -4,12 +4,13 @@ import { NoteList } from '../../components/NoteList/NoteList';
 import { StyledLink } from '../../components/GlobalStyle/Link.Styled';
 import { SortButtons } from '../../components/SortButtons/SortButtons';
 import { Filter } from '../../components/Filter/Filter';
+import { Loader } from '../../components/Loader/Loader';
 import { Div } from './NoteListPage.Styled';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../../firebase';
 import { useUserContext } from '../../userContext/userContext';
+import { getAllNotes } from '../../services/API';
 
 export const NoteListPage = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [notes, setNotes] = useState(null);
   const [filter, setFilter] = useState('');
   const [sortType, setSortType] = useState({
@@ -24,17 +25,16 @@ export const NoteListPage = () => {
   const { user } = useUserContext();
 
   useEffect(() => {
+    setIsLoading(true);
+
     const fetchData = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, user.id));
-        const newNotes = [];
-        querySnapshot.forEach(doc => newNotes.push(doc.data()));
-        newNotes.sort((firstNote, secondNote) =>
-          secondNote.date.localeCompare(firstNote.date)
-        );
-        setNotes(newNotes);
+        const newNotes = await getAllNotes();
+        setNotes(newNotes.data);
       } catch (error) {
         console.log(error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -43,19 +43,25 @@ export const NoteListPage = () => {
     }
   }, [user]);
 
-  const handleSort = data => {
-    const sortedNotes = notes.sort((firstNote, secondNote) => {
-      if (sortType[data]) {
-        return firstNote[data].localeCompare(secondNote[data]);
-      }
-      return secondNote[data].localeCompare(firstNote[data]);
-    });
+  const handleSort = async data => {
+    setIsLoading(true);
 
-    setNotes(sortedNotes);
+    try {
+      const sortedNotes = await getAllNotes(
+        data,
+        sortType[data] ? 'asc' : 'desc'
+      );
 
-    setSortType(previousSortType => {
-      return { ...previousSortType, [data]: !sortType[data] };
-    });
+      setNotes(sortedNotes.data);
+
+      setSortType(previousSortType => {
+        return { ...previousSortType, [data]: !sortType[data] };
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const onFilter = query => {
@@ -83,7 +89,8 @@ export const NoteListPage = () => {
           <Filter onFilter={onFilter} />
         </Div>
       )}
-      {filterNotes() && <NoteList notes={filterNotes()} />}
+      {filterNotes() && !isLoading && <NoteList notes={filterNotes()} />}
+      <Loader loading={isLoading} />
 
       <Outlet />
     </>

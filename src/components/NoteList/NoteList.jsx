@@ -10,8 +10,8 @@ export const NoteList = ({ notes }) => {
     <Ul>
       {notes.map(note => {
         return (
-          <li key={note.id}>
-            <Link to={`/notes/${note.id}`} state={{ from: location }}>
+          <li key={note._id}>
+            <Link to={`/notes/${note._id}`} state={{ from: location }}>
               <div>
                 <p>Дата надсилання</p> <p>{formatDate(note.date)}</p>
               </div>

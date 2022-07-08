@@ -1,30 +1,30 @@
 import { useEffect, useState } from 'react';
 import { useUserContext } from '../../userContext/userContext';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../../firebase';
 import { SourceBar } from '../../components/SourceBar/SourceBar';
 import { FeedbackPie } from '../../components/FeedbackPie/FeedbackPie';
 import { TimeChart } from '../../components/TimeChart/TimeChart';
 import { Button } from '../../components/GlobalStyle/Button';
+import { Loader } from '../../components/Loader/Loader';
 import { StatisticSection } from './StatisticPage.Styled';
+import { getAllNotes } from '../../services/API';
 
 export const StatisticPage = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [notes, setNotes] = useState(null);
   const [visibleChart, setVisibleChart] = useState('source');
   const { user } = useUserContext();
 
   useEffect(() => {
+    setIsLoading(true);
+
     const fetchData = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, user.id));
-        const newNotes = [];
-        querySnapshot.forEach(doc => newNotes.push(doc.data()));
-        newNotes.sort((firstNote, secondNote) =>
-          secondNote.date.localeCompare(firstNote.date)
-        );
-        setNotes(newNotes);
+        const newNotes = await getAllNotes();
+        setNotes(newNotes.data);
       } catch (error) {
         console.log(error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -58,9 +58,16 @@ export const StatisticPage = () => {
           </li>
         )}
       </ul>
-      {notes && visibleChart === 'source' && <SourceBar notes={notes} />}
-      {notes && visibleChart === 'pie' && <FeedbackPie notes={notes} />}
-      {notes && visibleChart === 'time' && <TimeChart notes={notes} />}
+
+      {!isLoading && (
+        <div>
+          {notes && visibleChart === 'source' && <SourceBar notes={notes} />}
+          {notes && visibleChart === 'pie' && <FeedbackPie notes={notes} />}
+          {notes && visibleChart === 'time' && <TimeChart notes={notes} />}
+        </div>
+      )}
+
+      <Loader loading={isLoading} />
     </StatisticSection>
   );
 };

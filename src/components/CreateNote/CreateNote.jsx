@@ -3,15 +3,13 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Form } from './CreateNote.Styled';
 import { StyledLink } from '../GlobalStyle/Link.Styled';
-import { nanoid } from 'nanoid';
-import { doc, setDoc } from 'firebase/firestore';
-import { db } from '../../firebase';
+import { Loader } from '../Loader/Loader';
 import { useUserContext } from '../../userContext/userContext';
 import { toast } from 'react-toastify';
-import { collection, getDocs } from 'firebase/firestore';
+import { addNote, getAllNotes } from '../../services/API';
 
 export const CreateNote = () => {
-  const [notes, setNotes] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [sources, setSources] = useState([]);
   const {
     register,
@@ -38,12 +36,9 @@ export const CreateNote = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, user.id));
-        const newNotes = [];
-        querySnapshot.forEach(doc => newNotes.push(doc.data()));
-        setNotes(newNotes);
+        const newNotes = await getAllNotes();
         setSources(
-          newNotes.reduce((acc, note) => {
+          newNotes.data.reduce((acc, note) => {
             if (acc.includes(note.source)) {
               return acc;
             } else {
@@ -62,28 +57,17 @@ export const CreateNote = () => {
   }, [user]);
 
   const onSubmit = async data => {
-    data.id = nanoid();
-    data.status = 'Надіслано';
-    data.source = data.source === 'other' ? data.customSource : data.source;
+    setIsLoading(true);
 
-    if (
-      notes.find(
-        note => note.company === data.company && note.position === data.position
-      )
-    ) {
-      toast.info('Ви вже відправляли резюме в цю компанію', {
+    try {
+      await addNote(data);
+      navigate('/notes');
+    } catch (error) {
+      toast.error(error.response.data?.message || error.message, {
         style: { backgroundColor: '#47406f', color: '#ffffff' },
       });
-    } else {
-      try {
-        await setDoc(doc(db, user.id, data.id), data);
-        navigate('/notes');
-      } catch (error) {
-        toast.error('Не вдалося зберегти', {
-          style: { backgroundColor: '#47406f', color: '#ffffff' },
-        });
-        console.error(error);
-      }
+      console.error(error);
+      setIsLoading(false);
     }
   };
 
@@ -91,70 +75,74 @@ export const CreateNote = () => {
     <>
       <StyledLink to={location?.state?.from ?? '/'}>Назад</StyledLink>
 
-      <Form onSubmit={handleSubmit(onSubmit)} style={{ marginTop: '20px' }}>
-        <label>
-          Позиція
-          <input type="text" {...register('position', { required: true })} />
-          {errors.position?.type === 'required' && "Обов'язкове поле*"}
-        </label>
+      {!isLoading && (
+        <Form onSubmit={handleSubmit(onSubmit)} style={{ marginTop: '20px' }}>
+          <label>
+            Позиція
+            <input type="text" {...register('position', { required: true })} />
+            {errors.position?.type === 'required' && "Обов'язкове поле*"}
+          </label>
 
-        <label>
-          Компанія
-          <input type="text" {...register('company', { required: true })} />
-          {errors.company?.type === 'required' && "Обов'язкове поле*"}
-        </label>
+          <label>
+            Компанія
+            <input type="text" {...register('company', { required: true })} />
+            {errors.company?.type === 'required' && "Обов'язкове поле*"}
+          </label>
 
-        <label>
-          Дата надсилання
-          <input
-            type="datetime-local"
-            {...register('date', { required: true })}
-          />
-          {errors.date?.type === 'required' && "Обов'язкове поле*"}
-        </label>
+          <label>
+            Дата надсилання
+            <input
+              type="datetime-local"
+              {...register('date', { required: true })}
+            />
+            {errors.date?.type === 'required' && "Обов'язкове поле*"}
+          </label>
 
-        <label>
-          Джерело
-          <select {...register('source', { required: true })}>
-            {defaultSources.map(source => (
-              <option key={source} value={source}>
-                {source}
-              </option>
-            ))}
-            {sources
-              .filter(source => !defaultSources.includes(source))
-              .map(source => (
+          <label>
+            Джерело
+            <select {...register('source', { required: true })}>
+              {defaultSources.map(source => (
                 <option key={source} value={source}>
                   {source}
                 </option>
               ))}
-            <option value="other">інше</option>
-          </select>
-        </label>
-
-        {watchSource === 'other' && (
-          <label>
-            Вкажіть джерело
-            <input
-              type="text"
-              {...register('customSource', { required: true })}
-            />
-            {errors.customSource?.type === 'required' && "Обов'язкове поле*"}
+              {sources
+                .filter(source => !defaultSources.includes(source))
+                .map(source => (
+                  <option key={source} value={source}>
+                    {source}
+                  </option>
+                ))}
+              <option value="other">інше</option>
+            </select>
           </label>
-        )}
 
-        <label>
-          Посилання
-          <input type="url" {...register('url')} />
-        </label>
+          {watchSource === 'other' && (
+            <label>
+              Вкажіть джерело
+              <input
+                type="text"
+                {...register('customSource', { required: true })}
+              />
+              {errors.customSource?.type === 'required' && "Обов'язкове поле*"}
+            </label>
+          )}
 
-        <label>
-          Опис
-          <textarea {...register('description', {})} rows="4"></textarea>
-        </label>
+          <label>
+            Посилання
+            <input type="url" {...register('url')} />
+          </label>
 
-        <input type="submit" value="Зберегти" />
-      </Form>
+          <label>
+            Опис
+            <textarea {...register('description', {})} rows="4"></textarea>
+          </label>
+
+          <input type="submit" value="Зберегти" />
+        </Form>
+      )}
+
+      <Loader loading={isLoading} />
     </>
   );
 };
