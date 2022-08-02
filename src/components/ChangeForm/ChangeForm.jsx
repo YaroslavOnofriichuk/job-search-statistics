@@ -6,8 +6,8 @@ import { StyledLink } from '../GlobalStyle/Link.Styled';
 import { Tittle } from '../GlobalStyle/Tittle';
 import { Loader } from '../Loader/Loader';
 import { useUserContext } from '../../userContext/userContext';
-import { toast } from 'react-toastify';
 import { changeName } from '../../services/API';
+import { checkError } from '../../helpers';
 
 export const ChangeForm = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -18,7 +18,7 @@ export const ChangeForm = () => {
   } = useForm();
   const navigate = useNavigate();
   const location = useLocation();
-  const { changeUser } = useUserContext();
+  const { changeUser, logOut } = useUserContext();
 
   const handleNameChange = async data => {
     setIsLoading(true);
@@ -27,12 +27,13 @@ export const ChangeForm = () => {
       changeUser(user.data);
       navigate(-1);
     } catch (error) {
-      toast.error('Не вдалося зберегти зміни', {
-        style: { backgroundColor: '#47406f', color: '#ffffff' },
-      });
-      console.log('error', error);
-    } finally {
-      setIsLoading(false);
+      if (error?.response?.data?.message === 'Not authorized') {
+        logOut();
+        navigate('/user');
+      } else {
+        checkError(error);
+        setIsLoading(false);
+      }
     }
   };
 

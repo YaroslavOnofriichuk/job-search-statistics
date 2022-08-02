@@ -5,8 +5,8 @@ import { Form } from './CreateNote.Styled';
 import { StyledLink } from '../GlobalStyle/Link.Styled';
 import { Loader } from '../Loader/Loader';
 import { useUserContext } from '../../userContext/userContext';
-import { toast } from 'react-toastify';
 import { addNote, getAllNotes } from '../../services/API';
+import { checkError } from '../../helpers';
 
 export const CreateNote = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -20,7 +20,7 @@ export const CreateNote = () => {
   const watchSource = watch('source');
   const navigate = useNavigate();
   const location = useLocation();
-  const { user } = useUserContext();
+  const { user, logOut } = useUserContext();
 
   const defaultSources = [
     'Linkedin',
@@ -47,14 +47,19 @@ export const CreateNote = () => {
           }, [])
         );
       } catch (error) {
-        console.log(error);
+        if (error?.response?.data?.message === 'Not authorized') {
+          logOut();
+          navigate('/user');
+        } else {
+          checkError(error);
+        }
       }
     };
 
     if (user) {
       fetchData();
     }
-  }, [user]);
+  }, [logOut, navigate, user]);
 
   const onSubmit = async data => {
     setIsLoading(true);
@@ -63,11 +68,13 @@ export const CreateNote = () => {
       await addNote(data);
       navigate('/notes');
     } catch (error) {
-      toast.error(error.response.data?.message || error.message, {
-        style: { backgroundColor: '#47406f', color: '#ffffff' },
-      });
-      console.error(error);
-      setIsLoading(false);
+      if (error?.response?.data?.message === 'Not authorized') {
+        logOut();
+        navigate('/user');
+      } else {
+        checkError(error);
+        setIsLoading(false);
+      }
     }
   };
 

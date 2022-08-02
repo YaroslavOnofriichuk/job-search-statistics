@@ -8,8 +8,8 @@ import { ChangeModal } from '../ChangeModal/ChangeModal';
 import { Loader } from '../Loader/Loader';
 import { formatDate } from '../../helpers';
 import { useUserContext } from '../../userContext/userContext';
-import { toast } from 'react-toastify';
 import { getOneNote, deleteNote, updateNote } from '../../services/API';
+import { checkError } from '../../helpers';
 
 export const Note = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -19,7 +19,7 @@ export const Note = () => {
   const { noteId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-  const { user } = useUserContext();
+  const { user, logOut } = useUserContext();
 
   useEffect(() => {
     setIsLoading(true);
@@ -28,18 +28,20 @@ export const Note = () => {
       try {
         const newNote = await getOneNote(noteId);
         setNote(newNote.data);
-      } catch (error) {
-        toast.error('Не знайдено замітку', {
-          style: { backgroundColor: '#47406f', color: '#ffffff' },
-        });
-        console.log(error);
-      } finally {
         setIsLoading(false);
+      } catch (error) {
+        if (error?.response?.data?.message === 'Not authorized') {
+          logOut();
+          navigate('/user');
+        } else {
+          checkError(error);
+          setIsLoading(false);
+        }
       }
     };
 
     fetchNote();
-  }, [noteId, user.id]);
+  }, [logOut, navigate, noteId, user.id]);
 
   const onDelete = async value => {
     if (value) {
@@ -49,15 +51,17 @@ export const Note = () => {
         await deleteNote(noteId);
         navigate(location?.state?.from ?? '/notes');
       } catch (error) {
-        toast.error('Не вдалося видалити', {
-          style: { backgroundColor: '#47406f', color: '#ffffff' },
-        });
-        console.log(error);
-        setIsLoading(false);
+        if (error?.response?.data?.message === 'Not authorized') {
+          logOut();
+          navigate('/user');
+        } else {
+          checkError(error);
+          setIsLoading(false);
+        }
       }
+    } else {
+      setIsOpenDeleteModal(false);
     }
-
-    setIsOpenDeleteModal(false);
   };
 
   const openDeleteModal = () => {
@@ -75,14 +79,17 @@ export const Note = () => {
       try {
         const newNote = await updateNote(noteId, data);
         setNote(newNote.data.note);
-      } catch (error) {
-        toast.error('Не вдалося змінити', {
-          style: { backgroundColor: '#47406f', color: '#ffffff' },
-        });
-        console.log(error);
-      } finally {
         setIsLoading(false);
         setIsOpenChangeForm(false);
+      } catch (error) {
+        if (error?.response?.data?.message === 'Not authorized') {
+          logOut();
+          navigate('/user');
+        } else {
+          checkError(error);
+          setIsLoading(false);
+          setIsOpenChangeForm(false);
+        }
       }
     } else {
       setIsOpenChangeForm(false);

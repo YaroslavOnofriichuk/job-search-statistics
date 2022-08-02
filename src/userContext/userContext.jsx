@@ -6,46 +6,40 @@ import {
   useMemo,
   useCallback,
 } from 'react';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import {
+  setUserData,
+  getUserData,
+  setAccessToken,
+} from '../services/LocalStorage';
 
 const UserContext = createContext();
 
 export const useUserContext = () => useContext(UserContext);
 
 export const UserProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => getUserData('isLoggedIn'));
+  const [user, setUser] = useState(() => getUserData('user'));
+  // const [accessToken, setAccessToken] = useState(() =>
+  //   getUserData('accessToken')
+  // );
 
   useEffect(() => {
-    const auth = getAuth();
-    onAuthStateChanged(auth, currentUser => {
-      if (currentUser) {
-        setUser({
-          email: currentUser.email,
-          token: currentUser.accessToken,
-          id: currentUser.uid,
-          name: currentUser.displayName,
-          image: currentUser.photoURL,
-        });
-        setIsLoggedIn(true);
-      } else {
-        setUser(null);
-        setIsLoggedIn(false);
-      }
+    setUserData({
+      isLoggedIn,
+      user,
     });
-  }, []);
+  }, [isLoggedIn, user]);
 
   const logIn = useCallback(data => {
     setIsLoggedIn(true);
     setUser(data.user);
-    setToken(data.token);
+    setAccessToken(data.accessToken);
   }, []);
 
   const logOut = useCallback(() => {
     setIsLoggedIn(false);
     setUser(null);
-    setToken(null);
+    setAccessToken(null);
   }, []);
 
   const changeUser = useCallback(data => {

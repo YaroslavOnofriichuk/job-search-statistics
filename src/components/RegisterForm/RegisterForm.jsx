@@ -6,8 +6,8 @@ import { StyledLink } from '../GlobalStyle/Link.Styled';
 import { Tittle } from '../GlobalStyle/Tittle';
 import { Loader } from '../Loader/Loader';
 import { useUserContext } from '../../userContext/userContext';
-import { toast } from 'react-toastify';
 import { registerUser, loginUser } from '../../services/API';
+import { checkError } from '../../helpers';
 
 export const RegisterForm = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -18,7 +18,7 @@ export const RegisterForm = () => {
   } = useForm();
   const navigate = useNavigate();
   const location = useLocation();
-  const { logIn } = useUserContext();
+  const { logIn, logOut } = useUserContext();
 
   const onSubmit = async data => {
     setIsLoading(true);
@@ -28,11 +28,13 @@ export const RegisterForm = () => {
       logIn(user.data);
       navigate(-1);
     } catch (error) {
-      console.log(error);
-      toast.error(error.response.data.message, {
-        style: { backgroundColor: '#47406f', color: '#ffffff' },
-      });
-      setIsLoading(false);
+      if (error?.response?.data?.message === 'Not authorized') {
+        logOut();
+        navigate('/user');
+      } else {
+        checkError(error);
+        setIsLoading(false);
+      }
     }
   };
 

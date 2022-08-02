@@ -9,7 +9,6 @@ import { ChangeAvatarForm } from './ChangeAvatarForm/ChangeAvatarForm';
 import { RegisterForm } from './RegisterForm/RegisterForm';
 import { GlobalStyle } from './GlobalStyle/GlobalStyle';
 import { UserProvider } from '../userContext/userContext';
-import { Loader } from '../components/Loader/Loader';
 import { LimitedRoute } from './LimitedRoute/LimitedRoute';
 import { PrivateRoute } from './PrivateRoute/PrivateRoute';
 import { MyToastContainer } from './Toast/Toast';
@@ -45,7 +44,7 @@ export const App = () => {
     <UserProvider>
       <GlobalStyle />
       <MyToastContainer />
-      <Suspense fallback={<Loader />}>
+      <Suspense fallback={null}>
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage />} />

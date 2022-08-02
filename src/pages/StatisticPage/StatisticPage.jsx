@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useUserContext } from '../../userContext/userContext';
 import { SourceBar } from '../../components/SourceBar/SourceBar';
 import { FeedbackPie } from '../../components/FeedbackPie/FeedbackPie';
@@ -7,12 +8,14 @@ import { Button } from '../../components/GlobalStyle/Button';
 import { Loader } from '../../components/Loader/Loader';
 import { StatisticSection } from './StatisticPage.Styled';
 import { getAllNotes } from '../../services/API';
+import { checkError } from '../../helpers';
 
 export const StatisticPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [notes, setNotes] = useState(null);
   const [visibleChart, setVisibleChart] = useState('source');
-  const { user } = useUserContext();
+  const { user, logOut } = useUserContext();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsLoading(true);
@@ -21,17 +24,22 @@ export const StatisticPage = () => {
       try {
         const newNotes = await getAllNotes();
         setNotes(newNotes.data);
-      } catch (error) {
-        console.log(error);
-      } finally {
         setIsLoading(false);
+      } catch (error) {
+        if (error?.response?.data?.message === 'Not authorized') {
+          logOut();
+          navigate('/user');
+        } else {
+          checkError(error);
+          setIsLoading(false);
+        }
       }
     };
 
     if (user) {
       fetchData();
     }
-  }, [user]);
+  }, [logOut, navigate, user]);
 
   const handleClick = e => {
     setVisibleChart(e.target.attributes.data.value);

@@ -1,15 +1,43 @@
 import axios from 'axios';
+import { getUserData, setAccessToken } from './LocalStorage';
 
 axios.defaults.baseURL = 'http://localhost:7000/api/v1/';
+axios.defaults.withCredentials = true;
 
-const token = {
-  set(token) {
-    axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+axios.interceptors.request.use(
+  function (config) {
+    config.headers.Authorization = `Bearer ${getUserData('accessToken')}`;
+    return config;
   },
-  unset() {
-    axios.defaults.headers.common.Authorization = '';
+  function (error) {
+    return Promise.reject(error);
+  }
+);
+
+axios.interceptors.response.use(
+  function (response) {
+    return response;
   },
-};
+  async function (error) {
+    const originalRequest = error.config;
+    if (
+      error.response.data.message === 'Token expired' &&
+      error.config &&
+      !originalRequest._isRetry
+    ) {
+      originalRequest._isRetry = true;
+      try {
+        const user = await axios.post('auth/refresh');
+        setAccessToken(user.data.accessToken);
+        axios.request(originalRequest);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    } else {
+      return Promise.reject(error);
+    }
+  }
+);
 
 export const registerUser = async data => {
   const user = await axios.post('auth/register', data);
@@ -18,13 +46,13 @@ export const registerUser = async data => {
 
 export const loginUser = async data => {
   const user = await axios.post('auth/login', data);
-  token.set(user.data.token);
+  setAccessToken(user.data.accessToken);
   return user;
 };
 
 export const logOutUser = async () => {
   const user = await axios.get('auth/logout');
-  token.unset();
+  setAccessToken(null);
   return user;
 };
 

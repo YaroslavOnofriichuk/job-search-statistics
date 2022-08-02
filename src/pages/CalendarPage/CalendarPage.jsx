@@ -8,13 +8,14 @@ import { checkColor } from '../../helpers';
 import { useUserContext } from '../../userContext/userContext';
 import { CalendarSection } from './CalendarPage.Styled';
 import { getAllNotes } from '../../services/API';
+import { checkError } from '../../helpers';
 
 export const CalendarPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [events, setEvents] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const { user } = useUserContext();
+  const { user, logOut } = useUserContext();
 
   useEffect(() => {
     setIsLoading(true);
@@ -33,17 +34,22 @@ export const CalendarPage = () => {
           });
         });
         setEvents(newEvents);
-      } catch (error) {
-        console.log(error);
-      } finally {
         setIsLoading(false);
+      } catch (error) {
+        if (error?.response?.data?.message === 'Not authorized') {
+          logOut();
+          navigate('/user');
+        } else {
+          checkError(error);
+          setIsLoading(false);
+        }
       }
     };
 
     if (user) {
       fetchData();
     }
-  }, [user]);
+  }, [logOut, navigate, user]);
 
   const handleDateClick = e => {
     const noteId = e.event._def.publicId;

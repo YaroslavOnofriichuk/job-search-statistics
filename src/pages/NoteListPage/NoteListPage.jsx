@@ -1,4 +1,4 @@
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { NoteList } from '../../components/NoteList/NoteList';
 import { StyledLink } from '../../components/GlobalStyle/Link.Styled';
@@ -8,6 +8,7 @@ import { Loader } from '../../components/Loader/Loader';
 import { Div } from './NoteListPage.Styled';
 import { useUserContext } from '../../userContext/userContext';
 import { getAllNotes } from '../../services/API';
+import { checkError } from '../../helpers';
 
 export const NoteListPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -22,7 +23,8 @@ export const NoteListPage = () => {
     status: true,
   });
   const location = useLocation();
-  const { user } = useUserContext();
+  const navigate = useNavigate();
+  const { user, logOut } = useUserContext();
 
   useEffect(() => {
     setIsLoading(true);
@@ -31,17 +33,22 @@ export const NoteListPage = () => {
       try {
         const newNotes = await getAllNotes();
         setNotes(newNotes.data);
-      } catch (error) {
-        console.log(error);
-      } finally {
         setIsLoading(false);
+      } catch (error) {
+        if (error?.response?.data?.message === 'Not authorized') {
+          logOut();
+          navigate('/user');
+        } else {
+          checkError(error);
+          setIsLoading(false);
+        }
       }
     };
 
     if (user) {
       fetchData();
     }
-  }, [user]);
+  }, [logOut, navigate, user]);
 
   const handleSort = async data => {
     setIsLoading(true);

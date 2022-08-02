@@ -3,7 +3,7 @@ import { UserIcon } from '../icons/icons';
 import { AvatarContainer } from './Avatar.Styled';
 
 export const Avatar = () => {
-  const { isLoggedIn, user } = useUserContext();
+  const { user } = useUserContext();
 
   return (
     <AvatarContainer url={user?.avatarURL}>
