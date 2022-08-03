@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { getUserData, setAccessToken } from './LocalStorage';
 
-axios.defaults.baseURL = 'http://localhost:7000/api/v1/';
+axios.defaults.baseURL =
+  'https://job-search-statistics-api.herokuapp.com/api/v1/';
 axios.defaults.withCredentials = true;
 
 axios.interceptors.request.use(
