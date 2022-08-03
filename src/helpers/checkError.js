@@ -35,7 +35,7 @@ export const checkError = error => {
       style: { backgroundColor: '#47406f', color: '#ffffff' },
     });
   } else if (message === 'Internal Server Error') {
-    toast.error('Помилка сервера', {
+    toast.error("Помилка сервера, або проблеми із з'єднанням", {
       style: { backgroundColor: '#47406f', color: '#ffffff' },
     });
   } else if (message === 'Email in use') {
