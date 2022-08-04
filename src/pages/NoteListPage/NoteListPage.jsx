@@ -35,7 +35,10 @@ export const NoteListPage = () => {
         setNotes(newNotes.data);
         setIsLoading(false);
       } catch (error) {
-        if (error?.response?.data?.message === 'Not authorized') {
+        if (
+          error?.response?.data?.message === 'Not authorized' ||
+          error?.response?.data?.message === 'Refresh token is required'
+        ) {
           logOut();
           navigate('/user');
         } else {

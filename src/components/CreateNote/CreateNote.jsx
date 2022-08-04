@@ -47,7 +47,10 @@ export const CreateNote = () => {
           }, [])
         );
       } catch (error) {
-        if (error?.response?.data?.message === 'Not authorized') {
+        if (
+          error?.response?.data?.message === 'Not authorized' ||
+          error?.response?.data?.message === 'Refresh token is required'
+        ) {
           logOut();
           navigate('/user');
         } else {
@@ -68,7 +71,10 @@ export const CreateNote = () => {
       await addNote(data);
       navigate('/notes');
     } catch (error) {
-      if (error?.response?.data?.message === 'Not authorized') {
+      if (
+        error?.response?.data?.message === 'Not authorized' ||
+        error?.response?.data?.message === 'Refresh token is required'
+      ) {
         logOut();
         navigate('/user');
       } else {
