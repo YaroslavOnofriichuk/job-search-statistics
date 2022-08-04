@@ -10,6 +10,7 @@ import {
   setUserData,
   getUserData,
   setAccessToken,
+  setRefreshToken,
 } from '../services/LocalStorage';
 
 const UserContext = createContext();
@@ -19,9 +20,6 @@ export const useUserContext = () => useContext(UserContext);
 export const UserProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(() => getUserData('isLoggedIn'));
   const [user, setUser] = useState(() => getUserData('user'));
-  // const [accessToken, setAccessToken] = useState(() =>
-  //   getUserData('accessToken')
-  // );
 
   useEffect(() => {
     setUserData({
@@ -34,12 +32,14 @@ export const UserProvider = ({ children }) => {
     setIsLoggedIn(true);
     setUser(data.user);
     setAccessToken(data.accessToken);
+    setRefreshToken(data.refreshToken);
   }, []);
 
   const logOut = useCallback(() => {
     setIsLoggedIn(false);
     setUser(null);
     setAccessToken(null);
+    setRefreshToken(null);
   }, []);
 
   const changeUser = useCallback(data => {

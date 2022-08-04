@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { getUserData, setAccessToken } from './LocalStorage';
+import { getUserData, setAccessToken, setRefreshToken } from './LocalStorage';
 
 axios.defaults.baseURL =
   'https://job-search-statistics-api.herokuapp.com/api/v1/';
-axios.defaults.withCredentials = true;
+// axios.defaults.withCredentials = true;
 
 axios.interceptors.request.use(
   function (config) {
@@ -28,8 +28,11 @@ axios.interceptors.response.use(
     ) {
       originalRequest._isRetry = true;
       try {
-        const user = await axios.post('auth/refresh');
+        const user = await axios.post('auth/refresh', {
+          refreshToken: getUserData('refreshToken'),
+        });
         setAccessToken(user.data.accessToken);
+        setRefreshToken(user.data.refreshToken);
         axios.request(originalRequest);
       } catch (error) {
         return Promise.reject(error);
