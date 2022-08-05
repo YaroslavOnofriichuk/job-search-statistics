@@ -3,7 +3,11 @@ import { getUserData, setAccessToken, setRefreshToken } from './LocalStorage';
 
 axios.defaults.baseURL =
   'https://job-search-statistics-api.herokuapp.com/api/v1/';
-// axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = true;
+axios.defaults.headers = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+};
 
 axios.interceptors.request.use(
   function (config) {
