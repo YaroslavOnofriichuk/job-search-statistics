@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { getUserData, setAccessToken, setRefreshToken } from './LocalStorage';
 
-axios.defaults.baseURL =
-  'https://job-search-statistics-api.herokuapp.com/api/v1/';
+// axios.defaults.baseURL =
+//   'https://job-search-statistics-api.herokuapp.com/api/v1/';
+axios.defaults.baseURL = 'http://localhost:7000/api/v1/';
 
 axios.interceptors.request.use(
   function (config) {
